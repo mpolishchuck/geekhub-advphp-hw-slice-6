@@ -1,1 +1,22 @@
 {% extends "PaulMaxwellBlogBundle::layout.html.twig" %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding-left: 0;">
+
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-right: 0;">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ 'paul_maxwell_blog.sidebar.last_articles'|trans }}</div>
+            <div class="panel-body"></div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ 'paul_maxwell_blog.sidebar.popular_articles'|trans }}</div>
+            <div class="panel-body"></div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ 'paul_maxwell_blog.sidebar.tags'|trans }}</div>
+            <div class="panel-body"></div>
+        </div>
+    </div>
+{% endblock body %}

@@ -5,3 +5,8 @@ paul_maxwell_blog:
         home: "Главная"
         about_me: "Обо мне"
         guestbook: "Гостевая"
+    sidebar:
+            last_articles: "Последние заметки"
+            popular_articles: "Популярные заметки"
+            last_gb_messages: "Последние посты гостевой"
+            tags: "Теги"
