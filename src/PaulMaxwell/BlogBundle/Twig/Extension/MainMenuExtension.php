@@ -20,7 +20,7 @@ class MainMenuExtension extends \Twig_Extension
     public function __construct(ContainerInterface $container, Router $router, Translator $translator)
     {
         $this->router = $router;
-        $this->request = $container->get('request');
+        $this->request = ($container->isScopeActive('request')) ? $container->get('request') : null;
         $this->translator = $translator;
     }
 
