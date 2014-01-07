@@ -17,3 +17,11 @@
 .posts-container {
     padding: 20px;
 }
+
+#gb_form_post textarea {
+    height: 150px;
+}
+
+#gb_form_post button {
+    width: 100%;
+}
