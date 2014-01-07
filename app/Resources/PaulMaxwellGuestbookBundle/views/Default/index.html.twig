@@ -1,0 +1,16 @@
+{% extends "PaulMaxwellGuestbookBundle::layout.html.twig" %}
+
+{% block body %}
+{{ parent() }}
+<div class="posts-container" id="posts-container">
+    <div id="gb_form_post">
+        {{ include('PaulMaxwellGuestbookBundle:Default:_form.html.twig', {'form': form}) }}
+    </div>
+    {% if enableShowPrevious is defined and enableShowPrevious and posts|length > 0 %}
+        <div style="margin-bottom: 20px;">
+            <a id="gb_show_previous" class="btn btn-default col-md-12" href="{{ url('paul_maxwell_guestbook_homepage', {'before_id': posts|first.id}) }}">{{ 'paul_maxwell_guestbook.show_previous'|trans }}</a>
+        </div>
+    {% endif %}
+    {{ include('PaulMaxwellGuestbookBundle:Default:_posts.html.twig', {'posts': posts, 'disableShowMore': disableShowMore}) }}
+</div>
+{% endblock body %}

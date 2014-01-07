@@ -1,0 +1,7 @@
+paul_maxwell_blog:
+    resource: "@PaulMaxwellBlogBundle/Resources/config/routing.yml"
+    prefix:   /
+
+paul_maxwell_guestbook:
+    resource: "@PaulMaxwellGuestbookBundle/Resources/config/routing.yml"
+    prefix:   /guestbook

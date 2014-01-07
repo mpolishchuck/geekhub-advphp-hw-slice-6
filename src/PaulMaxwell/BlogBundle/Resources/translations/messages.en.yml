@@ -1,0 +1,7 @@
+paul_maxwell_blog:
+    title: "The Simple Blog"
+    search: "Search"
+    main_menu:
+        home: "Home"
+        about_me: "About me"
+        guestbook: "Guestbook"

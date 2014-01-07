@@ -1,0 +1,11 @@
+{% extends "PaulMaxwellBlogBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/guestbook_style.css') }}">
+{% endblock %}
+
+{% block head_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/paulmaxwellguestbook/js/ajax.js') }}"></script>
+{% endblock %}

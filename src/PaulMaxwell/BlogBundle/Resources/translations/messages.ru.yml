@@ -1,0 +1,7 @@
+paul_maxwell_blog:
+    title: "Простой блог"
+    search: "Поиск"
+    main_menu:
+        home: "Главная"
+        about_me: "Обо мне"
+        guestbook: "Гостевая"

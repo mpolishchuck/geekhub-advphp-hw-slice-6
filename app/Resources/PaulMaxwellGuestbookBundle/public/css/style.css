@@ -1,0 +1,19 @@
+.paginator .pagination {
+    margin: 5px 0;
+}
+
+.upper-head {
+    height: 250px;
+}
+
+.post-form {
+    margin: 0 10px;
+}
+
+.post-form-unit {
+    margin: 0 5px;
+}
+
+.posts-container {
+    padding: 20px;
+}
