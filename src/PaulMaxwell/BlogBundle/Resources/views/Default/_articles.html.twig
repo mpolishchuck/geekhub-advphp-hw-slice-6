@@ -9,7 +9,7 @@
         </div>
         <div class="panel-footer">
             <div class="pull-left">{{ 'paul_maxwell_blog.post.category'|trans }}: <a href="{{ url('paul_maxwell_blog_category', {'category_id': article.category.id}) }}">{{ article.category.title }}</a></div>
-            <div class="pull-right">{{ 'paul_maxwell_blog.post.tags'|transchoice(article.tags|length) }} {% for tag in article.tags %}<a href="">{{ tag.title }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</div>
+            <div class="pull-right">{{ 'paul_maxwell_blog.post.tags'|transchoice(article.tags|length) }} {% for tag in article.tags %}<a href="{{ url('paul_maxwell_blog_tag', {'tag_id': tag.id}) }}">{{ tag.title }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</div>
             <div class="clearfix"></div>
         </div>
     </div>

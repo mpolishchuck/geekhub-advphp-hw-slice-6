@@ -13,3 +13,9 @@ paul_maxwell_blog_category:
     defaults: { _controller: PaulMaxwellBlogBundle:Default:index }
     requirements:
         category_id: "^[0-9]+$"
+
+paul_maxwell_blog_tag:
+    pattern:  /tag/{tag_id}
+    defaults: { _controller: PaulMaxwellBlogBundle:Default:index }
+    requirements:
+        tag_id: "^[0-9]+$"

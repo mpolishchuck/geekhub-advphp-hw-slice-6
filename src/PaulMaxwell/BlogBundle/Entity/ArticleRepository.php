@@ -3,6 +3,7 @@
 namespace PaulMaxwell\BlogBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 class ArticleRepository extends EntityRepository
 {
@@ -14,6 +15,10 @@ class ArticleRepository extends EntityRepository
         if (isset($filter['category']) && ($filter['category'] !==  false)) {
             $queryBuilder->andWhere('a.category = :category_id')
                 ->setParameter(':category_id', $filter['category']);
+        }
+        if (isset($filter['tag']) && ($filter['tag'] !== false)) {
+            $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
+                ->setParameter(':tag_id', $filter['tag']);
         }
         if ($after_id !== null) {
             $queryBuilder->andWhere('a.id < :after_id')
@@ -47,6 +52,10 @@ class ArticleRepository extends EntityRepository
             $queryBuilder->andWhere('a.category = :category_id')
                 ->setParameter(':category_id', $filter['category']);
         }
+        if (isset($filter['tag']) && ($filter['tag'] !== false)) {
+            $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
+                ->setParameter(':tag_id', $filter['tag']);
+        }
 
         return (count($queryBuilder->getQuery()->getResult()) > 0);
     }
@@ -62,6 +71,10 @@ class ArticleRepository extends EntityRepository
         if (isset($filter['category']) && ($filter['category'] !==  false)) {
             $queryBuilder->andWhere('a.category = :category_id')
                 ->setParameter(':category_id', $filter['category']);
+        }
+        if (isset($filter['tag']) && ($filter['tag'] !== false)) {
+            $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
+                ->setParameter(':tag_id', $filter['tag']);
         }
 
         return (count($queryBuilder->getQuery()->getResult()) > 0);

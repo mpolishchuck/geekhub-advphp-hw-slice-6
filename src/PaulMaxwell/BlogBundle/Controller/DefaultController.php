@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction($category_id = false)
+    public function indexAction($category_id = false, $tag_id = false)
     {
         $request = $this->getRequest();
 
@@ -25,6 +25,9 @@ class DefaultController extends Controller
         if ($category_id !== false) {
             $filter['category'] = $category_id;
             $route_settings['category_id'] = $category_id;
+        } elseif ($tag_id !== false) {
+            $filter['tag'] = $tag_id;
+            $route_settings['tag_id'] = $tag_id;
         }
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\Article[] $articles
