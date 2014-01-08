@@ -6,7 +6,10 @@ paul_maxwell_blog:
         about_me: "Обо мне"
         guestbook: "Гостевая"
     sidebar:
-            last_articles: "Последние заметки"
-            popular_articles: "Популярные заметки"
-            last_gb_messages: "Последние посты гостевой"
-            tags: "Теги"
+        last_articles: "Последние заметки"
+        popular_articles: "Популярные заметки"
+        last_gb_messages: "Последние посты гостевой"
+        tags: "Теги"
+    post:
+        category: "Категория"
+        tags: "{0} Тегов нет|{1} Тег: |[2,Inf] Теги: "

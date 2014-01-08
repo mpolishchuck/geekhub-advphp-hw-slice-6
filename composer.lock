@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "73c62de3ceff95664ee9fa2ab2dd4af7",
+    "hash": "69c1174581135d4372c37e3447a0cf4f",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1936,6 +1936,56 @@
                 "templating"
             ],
             "time": "2013-12-06 07:47:10"
+        },
+        {
+            "name": "wa72/htmlpagedom",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wasinger/htmlpagedom.git",
+                "reference": "c2bb79204c57fece280ee99bda3f3e1bbda016da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wasinger/htmlpagedom/zipball/c2bb79204c57fece280ee99bda3f3e1bbda016da",
+                "reference": "c2bb79204c57fece280ee99bda3f3e1bbda016da",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.1",
+                "symfony/css-selector": "~2.1",
+                "symfony/dom-crawler": "~2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Wa72\\HtmlPageDom": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christoph Singer",
+                    "email": "singer@webagentur72.de",
+                    "homepage": "http://www.webagentur72.de"
+                }
+            ],
+            "description": "HtmlPageDom is a PHP library for easy manipulation of HTML documents using DOM (like jQuery for PHP)",
+            "homepage": "http://github.com/wasinger/htmlpagedom",
+            "keywords": [
+                "crawler",
+                "dom",
+                "html"
+            ],
+            "time": "2013-08-30 16:24:39"
         }
     ],
     "packages-dev": [

@@ -10,3 +10,6 @@ paul_maxwell_blog:
         popular_articles: "Most viewed articles"
         last_gb_messages: "Last posts from guestbook"
         tags: "Tags"
+    post:
+        category: "Category"
+        tags: "{0} No tags|{1} Tag: |[2,Inf] Tags: "

@@ -3,20 +3,24 @@
 {% block body %}
     {{ parent() }}
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding-left: 0;">
-
+        {% for article in articles %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="pull-right">{{ article.postedAt|date('d.m.Y H:i') }}</span>
+                <a href="{{ url('paul_maxwell_blog_article', {'id': article.id}) }}">{{ article.title }}</a>
+            </div>
+            <div class="panel-body">
+                {{ article.body|first_paragraph|fix_img_tags }}
+            </div>
+            <div class="panel-footer">
+                <div class="pull-left">{{ 'paul_maxwell_blog.post.category'|trans }}: <a href="{{ url('paul_maxwell_blog_category', {'id': article.category.id}) }}">{{ article.category.title }}</a></div>
+                <div class="pull-right">{{ 'paul_maxwell_blog.post.tags'|transchoice(article.tags|length) }}{% for tag in article.tags %}<a href="">{{ tag.title }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-right: 0;">
-        <div class="panel panel-default">
-            <div class="panel-heading">{{ 'paul_maxwell_blog.sidebar.last_articles'|trans }}</div>
-            <div class="panel-body"></div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">{{ 'paul_maxwell_blog.sidebar.popular_articles'|trans }}</div>
-            <div class="panel-body"></div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">{{ 'paul_maxwell_blog.sidebar.tags'|trans }}</div>
-            <div class="panel-body"></div>
-        </div>
+        {{ render(controller('PaulMaxwellBlogBundle:Default:partialSidebar')) }}
     </div>
 {% endblock body %}
