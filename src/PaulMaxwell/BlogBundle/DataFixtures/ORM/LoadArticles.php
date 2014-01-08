@@ -52,11 +52,19 @@ class LoadArticles extends AbstractFixture implements OrderedFixtureInterface, C
                 ENT_NOQUOTES | ENT_SUBSTITUTE,
                 'UTF-8'
             ));
-            $article->setBody(html_entity_decode(
+            $body = html_entity_decode(
                 $node->filter('fulltext')->text(),
                 ENT_NOQUOTES | ENT_SUBSTITUTE,
                 'UTF-8'
-            ));
+            );
+            if (empty($body)) {
+                $body = html_entity_decode(
+                    $node->filter('introtext')->text(),
+                    ENT_NOQUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                );
+            }
+            $article->setBody($body);
             $article->setHits(html_entity_decode(
                 $node->filter('hits')->text(),
                 ENT_NOQUOTES | ENT_SUBSTITUTE,
