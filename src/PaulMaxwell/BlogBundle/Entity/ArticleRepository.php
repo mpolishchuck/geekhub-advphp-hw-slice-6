@@ -10,7 +10,7 @@ class ArticleRepository extends EntityRepository
     public function findLastArticles($limit, $after_id = null, $before_id = null, $filter = array())
     {
         $queryBuilder = $this->createQueryBuilder('a')
-            ->orderBy('a.postedAt', 'DESC')
+            ->orderBy('a.postedAt', ($before_id !== null) ? 'ASC' : 'DESC')
             ->setMaxResults($limit);
         if (isset($filter['category']) && ($filter['category'] !==  false)) {
             $queryBuilder->andWhere('a.category = :category_id')
@@ -42,7 +42,9 @@ class ArticleRepository extends EntityRepository
                 ->setParameter(':before_posted_at', $article->getPostedAt());
         }
 
-        return $queryBuilder->getQuery()->getResult();
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return ($before_id !== null) ? array_reverse($result) : $result;
     }
 
     public function findPopularArticles($limit)
