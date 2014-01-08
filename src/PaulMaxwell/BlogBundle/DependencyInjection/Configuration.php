@@ -26,7 +26,8 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('route')->end()
                     ->scalarNode('text')->end()
                 ->end()
-            ->end();
+            ->end()->end()
+            ->scalarNode('images_location')->defaultValue('%kernel.root_dir%/../web')->end();
 
         return $treeBuilder;
     }
