@@ -5,3 +5,13 @@ paul_maxwell_blog:
         home: "Home"
         about_me: "About me"
         guestbook: "Guestbook"
+    sidebar:
+        last_articles: "Last articles"
+        popular_articles: "Most viewed articles"
+        last_gb_messages: "Last posts from guestbook"
+        tags: "Tags"
+    post:
+        category: "Category"
+        tags: "{0} No tags|{1} Tag: |[2,Inf] Tags: "
+    show_more: 'Show more'
+    show_previous: 'Show previous'

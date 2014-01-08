@@ -11,6 +11,10 @@
             <argument type="service" id="router" />
             <argument type="service" id="translator" />
         </service>
+        <service id="paul_maxwell_blog_bundle.twig.blog_extension" class="PaulMaxwell\BlogBundle\Twig\Extension\BlogExtension">
+            <tag name="twig.extension" />
+            <argument type="service" id="twig.extension.assets" />
+        </service>
     </services>
 
 </container>

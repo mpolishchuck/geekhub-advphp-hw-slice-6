@@ -1,5 +1,10 @@
 {% extends "::base.html.twig" %}
 
+{% block head_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/paulmaxwellblog/js/ajax.js') }}"></script>
+{% endblock %}
+
 {% block title %}{{ 'paul_maxwell_blog.title'|trans }}{% endblock %}
 
 {% block body %}

@@ -1,1 +1,15 @@
 {% extends "PaulMaxwellBlogBundle::layout.html.twig" %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" id="articles-container" style="padding-left: 0;">
+        {{ include('PaulMaxwellBlogBundle:Default:_articles.html.twig', {
+            'articles': articles,
+            'category': category,
+            'route_settings': route_settings,
+        }) }}
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-right: 0;">
+        {{ render(controller('PaulMaxwellBlogBundle:Default:partialSidebar')) }}
+    </div>
+{% endblock body %}
