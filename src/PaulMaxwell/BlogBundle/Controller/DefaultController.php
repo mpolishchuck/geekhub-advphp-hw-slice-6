@@ -2,6 +2,7 @@
 
 namespace PaulMaxwell\BlogBundle\Controller;
 
+use PaulMaxwell\BlogBundle\Entity\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
@@ -85,10 +86,18 @@ class DefaultController extends Controller
         $ar = $em->getRepository('PaulMaxwellBlogBundle:Article');
         $last = $ar->findLastArticles(5);
         $popular = $ar->findPopularArticles(5);
+        /**
+         * @var \PaulMaxwell\BlogBundle\Entity\TagRepository $tr
+         */
+        $tr = $em->getRepository('PaulMaxwellBlogBundle:Tag');
+        $tags = $tr->findAll();
+        $max_weight = max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
 
         return $this->render('PaulMaxwellBlogBundle:Default:_sidebar.html.twig', array(
             'last' => $last,
             'popular' => $popular,
+            'tags' => $tags,
+            'tag_max_weight' => $max_weight,
         ));
     }
 }

@@ -30,6 +30,10 @@ class BlogExtension extends \Twig_Extension
                 array($this, 'fixImgTagsFilter'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'tag_weight_percent',
+                array($this, 'tagWeightPercentFilter')
+            ),
         );
     }
 
@@ -48,6 +52,12 @@ class BlogExtension extends \Twig_Extension
         $this->fixImgTagsInCrawler($crawler);
 
         return $crawler->saveHTML();
+    }
+
+    public function tagWeightPercentFilter($input, $max_weight)
+    {
+        $max_weight = $max_weight ?: 1;
+        return round(50 + 150 * ($input / $max_weight));
     }
 
     public function getName()

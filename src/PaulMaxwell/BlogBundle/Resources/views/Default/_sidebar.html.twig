@@ -8,5 +8,13 @@
 }) }}
 <div class="panel panel-default">
     <div class="panel-heading">{{ 'paul_maxwell_blog.sidebar.tags'|trans }}</div>
-    <div class="panel-body"></div>
+    <div class="panel-body">
+        <ul class="list-inline">
+            {% for tag in tags %}
+            <li style="font-size: {{ tag.timesUsed|tag_weight_percent(tag_max_weight) }}%">
+                <a href="{{ url('paul_maxwell_blog_tag', {'tag_id': tag.id}) }}">{{ tag.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
