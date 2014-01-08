@@ -13,3 +13,5 @@ paul_maxwell_blog:
     post:
         category: "Категория"
         tags: "{0} Тегов нет|{1} Тег: |[2,Inf] Теги: "
+    show_more: 'Показать ещё'
+    show_previous: 'Показать предыдущие'

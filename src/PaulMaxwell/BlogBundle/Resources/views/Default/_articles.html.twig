@@ -1,0 +1,21 @@
+{% for article in articles %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="pull-right">{{ article.postedAt|date('d.m.Y H:i') }}</span>
+            <a href="{{ url('paul_maxwell_blog_article', {'id': article.id}) }}">{{ article.title }}</a>
+        </div>
+        <div class="panel-body">
+            {{ article.body|first_paragraph|fix_img_tags }}
+        </div>
+        <div class="panel-footer">
+            <div class="pull-left">{{ 'paul_maxwell_blog.post.category'|trans }}: <a href="{{ url('paul_maxwell_blog_category', {'category_id': article.category.id}) }}">{{ article.category.title }}</a></div>
+            <div class="pull-right">{{ 'paul_maxwell_blog.post.tags'|transchoice(article.tags|length) }} {% for tag in article.tags %}<a href="">{{ tag.title }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endfor %}
+{% if (disableShowMore is not defined or not disableShowMore) and articles|length > 0 %}
+    <div style="margin-bottom: 20px;">
+        <a id="blog_show_more" class="btn btn-default col-xs-12 col-sm-12 col-md-12 col-lg-12" href="{{ url(app.request.attributes.get('_route'), route_settings|merge({'after_id': articles|last.id})) }}">{{ 'paul_maxwell_blog.show_more'|trans }}</a>
+    </div>
+{% endif %}

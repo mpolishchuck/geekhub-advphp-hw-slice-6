@@ -9,7 +9,7 @@ paul_maxwell_blog_article:
         id: "^[0-9]+$"
 
 paul_maxwell_blog_category:
-    pattern:  /category/{id}
-    defaults: { _controller: PaulMaxwellBlogBundle:Default:showCategory }
+    pattern:  /category/{category_id}
+    defaults: { _controller: PaulMaxwellBlogBundle:Default:index }
     requirements:
-            id: "^[0-9]+$"
+        category_id: "^[0-9]+$"
