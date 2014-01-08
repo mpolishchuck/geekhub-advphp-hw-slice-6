@@ -25,11 +25,21 @@ class ArticleRepository extends EntityRepository
                 ->setParameter(':text_search', '%' . $filter['like'] . '%');
         }
         if ($after_id !== null) {
-            $queryBuilder->andWhere('a.id < :after_id')
-                ->setParameter(':after_id', $after_id);
+            /**
+             * @var Article $article
+             */
+            $article = $this->find($after_id);
+
+            $queryBuilder->andWhere('a.postedAt < :after_posted_at')
+                ->setParameter(':after_posted_at', $article->getPostedAt());
         } elseif ($before_id !== null) {
-            $queryBuilder->andWhere('a.id > :before_id')
-                ->setParameter(':before_id', $before_id);
+            /**
+             * @var Article $article
+             */
+            $article = $this->find($before_id);
+
+            $queryBuilder->andWhere('a.postedAt > :before_posted_at')
+                ->setParameter(':before_posted_at', $article->getPostedAt());
         }
 
         return $queryBuilder->getQuery()->getResult();
@@ -46,9 +56,14 @@ class ArticleRepository extends EntityRepository
 
     public function hasArticlesBefore($id, $filter = array())
     {
+        /**
+         * @var Article $article
+         */
+        $article = $this->find($id);
+
         $queryBuilder = $this->createQueryBuilder('a')
-            ->where('a.id > :id')
-            ->setParameter('id', $id)
+            ->where('a.postedAt > :before_posted_at')
+            ->setParameter(':before_posted_at', $article->getPostedAt())
             ->orderBy('a.postedAt', 'ASC')
             ->addOrderBy('a.id', 'ASC')
             ->setMaxResults(1);
@@ -70,9 +85,14 @@ class ArticleRepository extends EntityRepository
 
     public function hasArticlesAfter($id, $filter = array())
     {
+        /**
+         * @var Article $article
+         */
+        $article = $this->find($id);
+
         $queryBuilder = $this->createQueryBuilder('a')
-            ->where('a.id < :id')
-            ->setParameter('id', $id)
+            ->where('a.postedAt < :after_posted_at')
+            ->setParameter(':after_posted_at', $article->getPostedAt())
             ->orderBy('a.postedAt', 'ASC')
             ->addOrderBy('a.id', 'ASC')
             ->setMaxResults(1);
