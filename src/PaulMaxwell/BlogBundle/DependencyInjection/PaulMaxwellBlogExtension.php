@@ -26,6 +26,7 @@ class PaulMaxwellBlogExtension extends Extension
             'paul_maxwell_blog.main_menu_append',
             isset($config['main_menu']) ? $config['main_menu'] : array()
         );
+        $container->setParameter('paul_maxwell_blog.images_location', $config['images_location']);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
