@@ -3,6 +3,7 @@
 namespace PaulMaxwell\BlogBundle\Controller;
 
 use PaulMaxwell\BlogBundle\Entity\Tag;
+use PaulMaxwell\BlogBundle\Event\ArticleViewedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
@@ -75,7 +76,18 @@ class DefaultController extends Controller
          * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
          */
         $ar = $em->getRepository('PaulMaxwellBlogBundle:Article');
+        /**
+         * @var \PaulMaxwell\BlogBundle\Entity\Article $article
+         */
         $article = $ar->find($id);
+
+        $event = new ArticleViewedEvent();
+        $event->setArticle($article);
+        /**
+         * @var \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+         */
+        $eventDispatcher = $this->get('event_dispatcher');
+        $eventDispatcher->dispatch('paul_maxwell_blog_bundle.article_viewed', $event);
 
         return $this->render('PaulMaxwellBlogBundle:Default:article.html.twig', array(
             'article' => $article,
