@@ -20,6 +20,10 @@ class ArticleRepository extends EntityRepository
             $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
                 ->setParameter(':tag_id', $filter['tag']);
         }
+        if (isset($filter['like']) && !empty($filter['like'])) {
+            $queryBuilder->andWhere('(a.title LIKE :text_search OR a.body LIKE :text_search)')
+                ->setParameter(':text_search', '%' . $filter['like'] . '%');
+        }
         if ($after_id !== null) {
             $queryBuilder->andWhere('a.id < :after_id')
                 ->setParameter(':after_id', $after_id);
@@ -56,6 +60,10 @@ class ArticleRepository extends EntityRepository
             $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
                 ->setParameter(':tag_id', $filter['tag']);
         }
+        if (isset($filter['like']) && !empty($filter['like'])) {
+            $queryBuilder->andWhere('(a.title LIKE :text_search OR a.body LIKE :text_search)')
+                ->setParameter(':text_search', '%' . $filter['like'] . '%');
+        }
 
         return (count($queryBuilder->getQuery()->getResult()) > 0);
     }
@@ -75,6 +83,10 @@ class ArticleRepository extends EntityRepository
         if (isset($filter['tag']) && ($filter['tag'] !== false)) {
             $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
                 ->setParameter(':tag_id', $filter['tag']);
+        }
+        if (isset($filter['like']) && !empty($filter['like'])) {
+            $queryBuilder->andWhere('(a.title LIKE :text_search OR a.body LIKE :text_search)')
+                ->setParameter(':text_search', '%' . $filter['like'] . '%');
         }
 
         return (count($queryBuilder->getQuery()->getResult()) > 0);

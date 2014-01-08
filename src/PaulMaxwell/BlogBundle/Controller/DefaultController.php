@@ -13,6 +13,7 @@ class DefaultController extends Controller
 
         $after_id = $request->get('after_id');
         $before_id = $request->get('before_id');
+        $search = $request->get('search');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -29,6 +30,10 @@ class DefaultController extends Controller
         } elseif ($tag_id !== false) {
             $filter['tag'] = $tag_id;
             $route_settings['tag_id'] = $tag_id;
+        }
+        if (!empty($search)) {
+            $filter['like'] = $search;
+            $route_settings['search'] = $search;
         }
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\Article[] $articles
@@ -57,6 +62,7 @@ class DefaultController extends Controller
                 'disableShowMore' => !$hasNext,
                 'category' => $category_id,
                 'route_settings' => $route_settings,
+                'search_term' => $search,
             ));
         }
     }
