@@ -1,3 +1,27 @@
 paul_maxwell_blog_homepage:
     pattern:  /
     defaults: { _controller: PaulMaxwellBlogBundle:Default:index }
+
+paul_maxwell_blog_article:
+    pattern:  /article/{id}
+    defaults: { _controller: PaulMaxwellBlogBundle:Default:showArticle }
+    requirements:
+        id: "^[0-9]+$"
+
+paul_maxwell_blog_category:
+    pattern:  /category/{category_id}
+    defaults: { _controller: PaulMaxwellBlogBundle:Default:index }
+    requirements:
+        category_id: "^[0-9]+$"
+
+paul_maxwell_blog_tag:
+    pattern:  /tag/{tag_id}
+    defaults: { _controller: PaulMaxwellBlogBundle:Default:index }
+    requirements:
+        tag_id: "^[0-9]+$"
+
+paul_maxwell_blog_aboutme:
+    pattern:  /aboutme
+    defaults:
+        _controller: PaulMaxwellBlogBundle:StaticPage:index
+        page: about_me

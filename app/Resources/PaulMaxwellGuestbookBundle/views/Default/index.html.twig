@@ -3,7 +3,7 @@
 {% block body %}
 {{ parent() }}
 <div class="posts-container" id="posts-container">
-    <div id="gb_form_post">
+    <div id="gb_form_post" style="margin-bottom: 20px;">
         {{ include('PaulMaxwellGuestbookBundle:Default:_form.html.twig', {'form': form}) }}
     </div>
     {% if enableShowPrevious is defined and enableShowPrevious and posts|length > 0 %}

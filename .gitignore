@@ -1,6 +1,7 @@
 /web/bundles/
 /web/css/
 /web/fonts/
+/web/images/
 /web/js/
 /app/bootstrap.php.cache
 /app/cache/*
@@ -10,7 +11,6 @@
 !app/logs/.gitkeep
 /build/
 /vendor/
-/bin/
 /composer.phar
 /.idea
 /nbproject

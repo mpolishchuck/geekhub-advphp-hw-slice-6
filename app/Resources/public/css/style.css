@@ -1,0 +1,29 @@
+#ajax_floating_indicator {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #000000;
+    opacity: 0;
+    padding: 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: -99;
+}
+
+#ajax_floating_indicator span {
+    display: inline-block;
+}
+
+#ajax_floating_indicator span.icon {
+    height: 31px;
+    width: 31px;
+    background-image: url('../images/circular-ajax-loader.gif');
+    float: left;
+}
+
+#ajax_floating_indicator span.label {
+    color: #ffffff;
+    padding: 8px 15px;
+    font-size: 16px;
+    font-weight: bold;
+}

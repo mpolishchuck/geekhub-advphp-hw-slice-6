@@ -35,6 +35,15 @@ assetic:
         guestbook_style:
             input: "%kernel.root_dir%/Resources/PaulMaxwellGuestbookBundle/public/css/style.css"
             output: "css/guestbook_style.css"
+        generic_style:
+            input: "%kernel.root_dir%/Resources/public/css/style.css"
+            output: "css/generic_style.css"
+        ajax_indicator_icon:
+            input: "%kernel.root_dir%/Resources/public/images/circular-ajax-loader.gif"
+            output: "images/circular-ajax-loader.gif"
+        generic_js:
+            input: "%kernel.root_dir%/Resources/public/js/script.js"
+            output: "js/generic_script.js"
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -94,3 +103,6 @@ paul_maxwell_blog:
         -
             route: "paul_maxwell_guestbook_homepage"
             text: "paul_maxwell_blog.main_menu.guestbook"
+    articles_per_panel: 5
+    gb_posts_per_panel: 5
+    articles_per_page: %posts_on_page_count%

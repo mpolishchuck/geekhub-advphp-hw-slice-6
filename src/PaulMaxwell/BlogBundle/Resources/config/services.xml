@@ -11,6 +11,18 @@
             <argument type="service" id="router" />
             <argument type="service" id="translator" />
         </service>
+        <service id="paul_maxwell_blog_bundle.twig.blog_extension" class="PaulMaxwell\BlogBundle\Twig\Extension\BlogExtension">
+            <tag name="twig.extension" />
+            <argument type="service" id="twig.extension.assets" />
+        </service>
+        <service id="paul_maxwell_blog_bundle.listener.article_viewed" class="PaulMaxwell\BlogBundle\EventListener\ArticleViewedListener">
+            <argument type="service" id="doctrine" />
+            <tag name="kernel.event_listener" event="paul_maxwell_blog_bundle.article_viewed" method="onArticleViewed"/>
+        </service>
+        <service id="paul_maxwell_blog_bundle.listener.doctrine" class="PaulMaxwell\BlogBundle\EventListener\DoctrineListener">
+            <tag name="doctrine.event_listener" event="preUpdate" />
+            <tag name="doctrine.event_listener" event="prePersist" />
+        </service>
     </services>
 
 </container>
