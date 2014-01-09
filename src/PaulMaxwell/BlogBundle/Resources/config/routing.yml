@@ -19,3 +19,9 @@ paul_maxwell_blog_tag:
     defaults: { _controller: PaulMaxwellBlogBundle:Default:index }
     requirements:
         tag_id: "^[0-9]+$"
+
+paul_maxwell_blog_aboutme:
+    pattern:  /aboutme
+    defaults:
+        _controller: PaulMaxwellBlogBundle:StaticPage:index
+        page: about_me

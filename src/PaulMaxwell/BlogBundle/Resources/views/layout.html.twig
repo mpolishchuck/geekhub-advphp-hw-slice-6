@@ -14,7 +14,8 @@
     <div class="navbar navbar-default">
         <ul class="nav navbar-nav navbar-left">
             {{ main_menu(
-                {'route': 'paul_maxwell_blog_homepage', 'text': 'paul_maxwell_blog.main_menu.home'}
+                {'route': 'paul_maxwell_blog_homepage', 'text': 'paul_maxwell_blog.main_menu.home'},
+                {'route': 'paul_maxwell_blog_aboutme', 'text': 'paul_maxwell_blog.main_menu.about_me'}
             ) }}
         </ul>
         <form class="navbar-form navbar-right" method="get" target="_self" action="{% if route_settings is defined %}{{ url(app.request.attributes.get('_route'), route_settings) }}{% else %}{{ url('paul_maxwell_blog_homepage') }}{% endif %}">

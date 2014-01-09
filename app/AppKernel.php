@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new PaulMaxwell\GuestbookBundle\PaulMaxwellGuestbookBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new PaulMaxwell\BlogBundle\PaulMaxwellBlogBundle(),
+            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
