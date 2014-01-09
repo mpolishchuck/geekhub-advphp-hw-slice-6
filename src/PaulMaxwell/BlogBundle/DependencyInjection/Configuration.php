@@ -27,7 +27,10 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('text')->end()
                 ->end()
             ->end()->end()
-            ->scalarNode('images_location')->defaultValue('%kernel.root_dir%/../web')->end();
+            ->scalarNode('images_location')->defaultValue('%kernel.root_dir%/../web')->end()
+            ->scalarNode('articles_per_page')->defaultValue(10)->end()
+            ->scalarNode('articles_per_panel')->defaultValue(5)->end()
+            ->scalarNode('gb_posts_per_panel')->defaultValue(5)->end();
 
         return $treeBuilder;
     }

@@ -39,7 +39,12 @@ class DefaultController extends Controller
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\Article[] $articles
          */
-        $articles = $ar->findLastArticles(10, $after_id, $before_id, $filter);
+        $articles = $ar->findLastArticles(
+            $this->container->getParameter('paul_maxwell_blog.articles_per_page'),
+            $after_id,
+            $before_id,
+            $filter
+        );
 
         if (count($articles) > 0) {
             $hasPrevious = $ar->hasArticlesBefore($articles[0]->getId(), $filter);
@@ -102,8 +107,12 @@ class DefaultController extends Controller
          * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
          */
         $ar = $em->getRepository('PaulMaxwellBlogBundle:Article');
-        $last = $ar->findLastArticles(5);
-        $popular = $ar->findPopularArticles(5);
+        $last = $ar->findLastArticles(
+            $this->container->getParameter('paul_maxwell_blog.articles_per_panel')
+        );
+        $popular = $ar->findPopularArticles(
+            $this->container->getParameter('paul_maxwell_blog.articles_per_panel')
+        );
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\TagRepository $tr
          */
@@ -114,7 +123,9 @@ class DefaultController extends Controller
          * @var \PaulMaxwell\GuestbookBundle\Entity\MessageRepository $mr
          */
         $mr = $em->getRepository('PaulMaxwellGuestbookBundle:Message');
-        $gb_posts = $mr->findFirstSlice(5);
+        $gb_posts = $mr->findFirstSlice(
+            $this->container->getParameter('paul_maxwell_blog.gb_posts_per_panel')
+        );
 
         return $this->render('PaulMaxwellBlogBundle:Default:_sidebar.html.twig', array(
             'last' => $last,
