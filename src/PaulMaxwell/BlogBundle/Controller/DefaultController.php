@@ -110,12 +110,18 @@ class DefaultController extends Controller
         $tr = $em->getRepository('PaulMaxwellBlogBundle:Tag');
         $tags = $tr->findAll();
         $max_weight = max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
+        /**
+         * @var \PaulMaxwell\GuestbookBundle\Entity\MessageRepository $mr
+         */
+        $mr = $em->getRepository('PaulMaxwellGuestbookBundle:Message');
+        $gb_posts = $mr->findFirstSlice(5);
 
         return $this->render('PaulMaxwellBlogBundle:Default:_sidebar.html.twig', array(
             'last' => $last,
             'popular' => $popular,
             'tags' => $tags,
             'tag_max_weight' => $max_weight,
+            'gb_posts' => $gb_posts,
         ));
     }
 }
