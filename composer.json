@@ -26,7 +26,8 @@
         "stof/doctrine-extensions-bundle": "v1.1.0",
         "mjohnson/decoda": "6.3.1",
         "paulmaxwell/guestbook": "v0.5",
-        "wa72/htmlpagedom": "v1.0.4"
+        "wa72/htmlpagedom": "v1.0.4",
+        "knplabs/knp-markdown-bundle": "1.2.0"
     },
     "scripts": {
         "post-install-cmd": [
