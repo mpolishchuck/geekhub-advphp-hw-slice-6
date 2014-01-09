@@ -145,7 +145,7 @@ class Article
     }
 
     /**
-     * @return Tag[]
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getTags()
     {

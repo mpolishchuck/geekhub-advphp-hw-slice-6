@@ -28,7 +28,7 @@ class Tag
     /**
      * @ORM\Column(name="times_used", type="integer")
      */
-    protected $timesUsed;
+    protected $timesUsed = 0;
 
     /**
      * @ORM\ManyToMany(targetEntity="Article", inversedBy="tags")
@@ -76,7 +76,7 @@ class Tag
     }
 
     /**
-     * @return Article[]
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getArticles()
     {

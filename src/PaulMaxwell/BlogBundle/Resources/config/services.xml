@@ -19,6 +19,10 @@
             <argument type="service" id="doctrine" />
             <tag name="kernel.event_listener" event="paul_maxwell_blog_bundle.article_viewed" method="onArticleViewed"/>
         </service>
+        <service id="paul_maxwell_blog_bundle.listener.doctrine" class="PaulMaxwell\BlogBundle\EventListener\DoctrineListener">
+            <tag name="doctrine.event_listener" event="preUpdate" />
+            <tag name="doctrine.event_listener" event="prePersist" />
+        </service>
     </services>
 
 </container>
