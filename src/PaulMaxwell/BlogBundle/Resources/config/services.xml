@@ -16,12 +16,21 @@
             <argument type="service" id="twig.extension.assets" />
         </service>
         <service id="paul_maxwell_blog_bundle.listener.article_viewed" class="PaulMaxwell\BlogBundle\EventListener\ArticleViewedListener">
-            <argument type="service" id="doctrine" />
+            <argument type="service" id="paul_maxwell_blog_bundle.repository.article" />
             <tag name="kernel.event_listener" event="paul_maxwell_blog_bundle.article_viewed" method="onArticleViewed"/>
         </service>
         <service id="paul_maxwell_blog_bundle.listener.doctrine" class="PaulMaxwell\BlogBundle\EventListener\DoctrineListener">
             <tag name="doctrine.event_listener" event="preUpdate" />
             <tag name="doctrine.event_listener" event="prePersist" />
+        </service>
+        <service id="paul_maxwell_blog_bundle.repository.article" class="PaulMaxwell\BlogBundle\Entity\ArticleRepository" factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
+            <argument>PaulMaxwellBlogBundle:Article</argument>
+        </service>
+        <service id="paul_maxwell_blog_bundle.repository.category" class="PaulMaxwell\BlogBundle\Entity\CategoryRepository" factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
+            <argument>PaulMaxwellBlogBundle:Category</argument>
+        </service>
+        <service id="paul_maxwell_blog_bundle.repository.tag" class="PaulMaxwell\BlogBundle\Entity\TagRepository" factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
+            <argument>PaulMaxwellBlogBundle:Tag</argument>
         </service>
     </services>
 

@@ -113,4 +113,13 @@ class ArticleRepository extends EntityRepository
 
         return (count($queryBuilder->getQuery()->getResult()) > 0);
     }
+
+    public function increaseHitsById($id)
+    {
+        $query = $this
+            ->getEntityManager()
+            ->createQuery('UPDATE PaulMaxwellBlogBundle:Article a SET a.hits = a.hits + 1 WHERE a.id = :article_id')
+            ->setParameter(':article_id', $id);
+        $query->execute();
+    }
 }

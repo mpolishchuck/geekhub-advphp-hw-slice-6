@@ -2,6 +2,7 @@
 
 namespace PaulMaxwell\BlogBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,11 @@ class Tag
      * @ORM\ManyToMany(targetEntity="Article", inversedBy="tags")
      */
     protected $articles;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
 
     /**
      * @return integer
