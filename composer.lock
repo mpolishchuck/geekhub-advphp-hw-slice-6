@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "73c9c0c9eee4ae66953deb764b3a7430",
+    "hash": "d53dd8e456d3531c00afebc585b8323b",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -2104,6 +2104,50 @@
                 "html"
             ],
             "time": "2013-08-30 16:24:39"
+        },
+        {
+            "name": "whiteoctober/breadcrumbs-bundle",
+            "version": "1.0.0",
+            "target-dir": "WhiteOctober/BreadcrumbsBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/whiteoctober/BreadcrumbsBundle.git",
+                "reference": "823cd10b428377b164fba80c78b608cff4da1a94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/whiteoctober/BreadcrumbsBundle/zipball/823cd10b428377b164fba80c78b608cff4da1a94",
+                "reference": "823cd10b428377b164fba80c78b608cff4da1a94",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "2.*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "WhiteOctober\\BreadcrumbsBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rich Sage",
+                    "email": "rich.sage@gmail.com",
+                    "homepage": "http://www.richsage.co.uk/"
+                }
+            ],
+            "description": "A small breadcrumbs bundle for Symfony2",
+            "homepage": "https://github.com/whiteoctober/BreadcrumbsBundle",
+            "keywords": [
+                "breadcrumbs",
+                "symfony"
+            ],
+            "time": "2013-09-10 17:26:20"
         }
     ],
     "packages-dev": [
