@@ -1,6 +1,8 @@
 GeekHub Homework 12. The Simple Blog.
 ========================
 
+[![Build Status](https://travis-ci.org/paulmaxwell/geekhub-advphp-hw-slice-6.png?branch=master)](https://travis-ci.org/paulmaxwell/geekhub-advphp-hw-slice-6)
+
 ## Steps to deploy: ##
 
 1. Clone repository to your local machine
@@ -10,4 +12,8 @@ GeekHub Homework 12. The Simple Blog.
  ```
  sh bin/reload.sh
  ```
-5. Enjoy ;)
+5. Use chmod.sh if your has inconvenient configuration
+ ```
+ sh bin/chmod.sh
+ ```
+6. Enjoy ;)
