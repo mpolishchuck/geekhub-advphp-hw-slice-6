@@ -15,3 +15,4 @@ paul_maxwell_blog:
         tags: "{0} Тегов нет|{1} Тег: |[2,Inf] Теги: "
     show_more: 'Показать ещё'
     show_previous: 'Показать предыдущие'
+    tags: 'Теги'

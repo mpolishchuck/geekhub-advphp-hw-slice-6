@@ -2,6 +2,8 @@
 
 namespace PaulMaxwell\BlogBundle\Controller;
 
+use PaulMaxwell\BlogBundle\Entity\Article;
+use PaulMaxwell\BlogBundle\Entity\Category;
 use PaulMaxwell\BlogBundle\Entity\Tag;
 use PaulMaxwell\BlogBundle\Event\ArticleViewedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,9 +28,15 @@ class DefaultController extends Controller
         if ($category_id !== false) {
             $filter['category'] = $category_id;
             $route_settings['category_id'] = $category_id;
+            $this->generateBreadcrumbs(
+                $this->get('paul_maxwell_blog_bundle.repository.category')->find($category_id)
+            );
         } elseif ($tag_id !== false) {
             $filter['tag'] = $tag_id;
             $route_settings['tag_id'] = $tag_id;
+            $this->generateBreadcrumbs(
+                $this->get('paul_maxwell_blog_bundle.repository.tag')->find($tag_id)
+            );
         }
         if (!empty($search)) {
             $filter['like'] = $search;
@@ -93,6 +101,8 @@ class DefaultController extends Controller
         $eventDispatcher = $this->get('event_dispatcher');
         $eventDispatcher->dispatch('paul_maxwell_blog_bundle.article_viewed', $event);
 
+        $this->generateBreadcrumbs($article);
+
         return $this->render('PaulMaxwellBlogBundle:Default:article.html.twig', array(
             'article' => $article,
         ));
@@ -131,5 +141,39 @@ class DefaultController extends Controller
             'tag_max_weight' => $max_weight,
             'gb_posts' => $gb_posts,
         ));
+    }
+
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\Article|\PaulMaxwell\BlogBundle\Entity\Category|\PaulMaxwell\BlogBundle\Entity\Tag $entity
+     */
+    protected function generateBreadcrumbs($entity)
+    {
+        /**
+         * @var \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs $breadcrumbs
+         * @var \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+         */
+        $breadcrumbs = $this->get('white_october_breadcrumbs');
+        $router = $this->get('router');
+        $breadcrumbs->addItem(
+            'paul_maxwell_blog.main_menu.home',
+            $this->get('router')->generate('paul_maxwell_blog_homepage')
+        );
+        $categories = array();
+        if ($entity instanceof Article) {
+            $category = $entity->getCategory();
+        } elseif ($entity instanceof Category) {
+            $category = $entity->getParent();
+        } elseif ($entity instanceof Tag) {
+            $breadcrumbs->addItem('paul_maxwell_blog.tags');
+        }
+        if (isset($category) && $category) {
+            do {
+                $categories = array_merge(array($category), $categories);
+            } while (($category = $category->getParent()) !== null);
+        }
+        $breadcrumbs->addObjectArray($categories, 'title', function (Category $category) use ($router) {
+            return $router->generate('paul_maxwell_blog_category', array('category_id' => $category->getId()));
+        });
+        $breadcrumbs->addItem($entity->getTitle());
     }
 }
