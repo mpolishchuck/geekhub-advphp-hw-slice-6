@@ -43,6 +43,9 @@ class DefaultController extends Controller
             $before_id,
             $filter
         );
+        if (count($articles)) {
+            $ar->fetchTagDataByArticles($articles);
+        }
 
         if (count($articles) > 0) {
             $hasPrevious = $ar->hasArticlesBefore($articles[0]->getId(), $filter);
