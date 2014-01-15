@@ -16,12 +16,10 @@ class DefaultController extends Controller
         $before_id = $request->get('before_id');
         $search = $request->get('search');
 
-        $em = $this->getDoctrine()->getManager();
-
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
          */
-        $ar = $em->getRepository('PaulMaxwellBlogBundle:Article');
+        $ar = $this->get('paul_maxwell_blog_bundle.repository.article');
 
         $filter = array();
         $route_settings = array();
@@ -75,12 +73,10 @@ class DefaultController extends Controller
 
     public function showArticleAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
          */
-        $ar = $em->getRepository('PaulMaxwellBlogBundle:Article');
+        $ar = $this->get('paul_maxwell_blog_bundle.repository.article');
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\Article $article
          */
@@ -101,12 +97,10 @@ class DefaultController extends Controller
 
     public function partialSidebarAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
          */
-        $ar = $em->getRepository('PaulMaxwellBlogBundle:Article');
+        $ar = $this->get('paul_maxwell_blog_bundle.repository.article');
         $last = $ar->findLastArticles(
             $this->container->getParameter('paul_maxwell_blog.articles_per_panel')
         );
@@ -116,13 +110,13 @@ class DefaultController extends Controller
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\TagRepository $tr
          */
-        $tr = $em->getRepository('PaulMaxwellBlogBundle:Tag');
+        $tr = $this->get('paul_maxwell_blog_bundle.repository.tag');
         $tags = $tr->findAll();
         $max_weight = max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
         /**
          * @var \PaulMaxwell\GuestbookBundle\Entity\MessageRepository $mr
          */
-        $mr = $em->getRepository('PaulMaxwellGuestbookBundle:Message');
+        $mr = $this->getDoctrine()->getManager()->getRepository('PaulMaxwellGuestbookBundle:Message');
         $gb_posts = $mr->findFirstSlice(
             $this->container->getParameter('paul_maxwell_blog.gb_posts_per_panel')
         );
