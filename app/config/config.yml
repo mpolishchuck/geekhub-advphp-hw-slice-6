@@ -119,3 +119,4 @@ lunetics_locale:
     allowed_locales:
         - en
         - ru
+        - uk

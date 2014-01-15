@@ -1,0 +1,3 @@
+paul_maxwell_guestbook:
+    post:
+        only_letters: 'Можна використати лише літери'
