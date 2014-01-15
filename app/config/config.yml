@@ -109,3 +109,14 @@ paul_maxwell_blog:
 
 white_october_breadcrumbs:
     separator: ''
+
+lunetics_locale:
+    guessing_order:
+        - query
+        - session
+        - cookie
+        - browser
+    allowed_locales:
+        - en
+        - ru
+        - uk

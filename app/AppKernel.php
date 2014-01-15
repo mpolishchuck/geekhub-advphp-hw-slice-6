@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new PaulMaxwell\BlogBundle\PaulMaxwellBlogBundle(),
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+            new Lunetics\LocaleBundle\LuneticsLocaleBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
