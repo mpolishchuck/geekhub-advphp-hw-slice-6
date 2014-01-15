@@ -10,6 +10,8 @@ class ArticleRepository extends EntityRepository
     public function findLastArticles($limit, $after_id = null, $before_id = null, $filter = array())
     {
         $queryBuilder = $this->createQueryBuilder('a')
+            ->addSelect('c')
+            ->leftJoin('a.category', 'c')
             ->orderBy('a.postedAt', ($before_id !== null) ? 'ASC' : 'DESC')
             ->setMaxResults($limit);
         if (isset($filter['category']) && ($filter['category'] !==  false)) {
@@ -112,5 +114,27 @@ class ArticleRepository extends EntityRepository
         }
 
         return (count($queryBuilder->getQuery()->getResult()) > 0);
+    }
+
+    public function increaseHitsById($id)
+    {
+        $query = $this
+            ->getEntityManager()
+            ->createQuery('UPDATE PaulMaxwellBlogBundle:Article a SET a.hits = a.hits + 1 WHERE a.id = :article_id')
+            ->setParameter(':article_id', $id);
+        $query->execute();
+    }
+
+    public function fetchTagDataByArticles($articles)
+    {
+        $this->createQueryBuilder('a')
+            ->addSelect('t')
+            ->leftJoin('a.tags', 't')
+            ->where('a.id IN (:ids)')
+            ->setParameter(
+                ':ids',
+                array_map(function (Article $article) { return $article->getId(); }, $articles)
+            )
+            ->getQuery()->execute();
     }
 }

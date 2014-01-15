@@ -2,7 +2,9 @@
 
 namespace PaulMaxwell\BlogBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as DoctrineExtension;
 
 /**
  * Class Article
@@ -38,11 +40,13 @@ class Article
 
     /**
      * @ORM\Column(name="posted_at", type="datetime")
+     * @DoctrineExtension\Timestampable(on="create")
      */
     protected $postedAt;
 
     /**
      * @ORM\Column(name="modified_at", type="datetime")
+     * @DoctrineExtension\Timestampable(on="update")
      */
     protected $modifiedAt;
 
@@ -55,6 +59,11 @@ class Article
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="articles")
      */
     protected $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * @param string $body

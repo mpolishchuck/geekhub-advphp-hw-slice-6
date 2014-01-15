@@ -27,7 +27,9 @@
         "mjohnson/decoda": "6.3.1",
         "paulmaxwell/guestbook": "v0.5",
         "wa72/htmlpagedom": "v1.0.4",
-        "knplabs/knp-markdown-bundle": "1.2.0"
+        "knplabs/knp-markdown-bundle": "1.2.0",
+        "whiteoctober/breadcrumbs-bundle": "1.0.0",
+        "lunetics/locale-bundle": "v2.2.1"
     },
     "scripts": {
         "post-install-cmd": [

@@ -2,30 +2,23 @@
 
 namespace PaulMaxwell\BlogBundle\EventListener;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use PaulMaxwell\BlogBundle\Entity\ArticleRepository;
 use PaulMaxwell\BlogBundle\Event\ArticleViewedEvent;
 
 class ArticleViewedListener
 {
     /**
-     * @var \Doctrine\Bundle\DoctrineBundle\Registry
+     * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository
      */
-    protected $doctrine;
+    protected $repository;
 
-    public function __construct(Registry $doctrine)
+    public function __construct(ArticleRepository $repository)
     {
-        $this->doctrine = $doctrine;
+        $this->repository = $repository;
     }
 
     public function onArticleViewed(ArticleViewedEvent $event)
     {
-        $em = $this->doctrine->getManager();
-        /**
-         * @var \Doctrine\ORM\Query $query
-         */
-        $query = $em
-            ->createQuery('UPDATE PaulMaxwellBlogBundle:Article a SET a.hits = a.hits + 1 WHERE a.id = :article_id')
-            ->setParameter(':article_id', $event->getArticle()->getId());
-        $query->execute();
+        $this->repository->increaseHitsById($event->getArticle()->getId());
     }
 }

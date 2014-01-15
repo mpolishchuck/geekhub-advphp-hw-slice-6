@@ -1,0 +1,18 @@
+paul_maxwell_blog:
+    title: "Простий блог"
+    search: "Пошук"
+    main_menu:
+        home: "Головна"
+        about_me: "Про мене"
+        guestbook: "Гостьова"
+    sidebar:
+        last_articles: "Останні замітки"
+        popular_articles: "Популярні замітки"
+        last_gb_messages: "Останні пости гостьової"
+        tags: "Теги"
+    post:
+        category: "Категорія"
+        tags: "{0} Тегів нема|{1} Тег: |[2,Inf] Теги: "
+    show_more: 'Показати ще'
+    show_previous: 'Показати попередні'
+    tags: 'Теги'

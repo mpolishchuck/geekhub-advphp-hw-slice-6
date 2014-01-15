@@ -106,3 +106,17 @@ paul_maxwell_blog:
     articles_per_panel: 5
     gb_posts_per_panel: 5
     articles_per_page: %posts_on_page_count%
+
+white_october_breadcrumbs:
+    separator: ''
+
+lunetics_locale:
+    guessing_order:
+        - query
+        - session
+        - cookie
+        - browser
+    allowed_locales:
+        - en
+        - ru
+        - uk
