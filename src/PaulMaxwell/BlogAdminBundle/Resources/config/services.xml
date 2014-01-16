@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sonata.admin.category" class="PaulMaxwell\BlogAdminBundle\Admin\CategoryAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Category"/>
+            <argument/>
+            <argument>PaulMaxwell\BlogBundle\Entity\Category</argument>
+            <argument/>
+        </service>
+
+        <service id="sonata.admin.tag" class="PaulMaxwell\BlogAdminBundle\Admin\TagAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Tag"/>
+            <argument/>
+            <argument>PaulMaxwell\BlogBundle\Entity\Tag</argument>
+            <argument/>
+        </service>
+
+        <service id="sonata.admin.article" class="PaulMaxwell\BlogAdminBundle\Admin\ArticleAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Atricle"/>
+            <argument/>
+            <argument>PaulMaxwell\BlogBundle\Entity\Article</argument>
+            <argument/>
+        </service>
+    </services>
+
+</container>

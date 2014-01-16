@@ -53,7 +53,7 @@ class Article
     /**
      * @ORM\Column(type="integer")
      */
-    protected $hits;
+    protected $hits = 0;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="articles")
@@ -175,5 +175,23 @@ class Article
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function addTag(Tag $tag)
+    {
+        $this->tags->add($tag);
+        $tag->getArticles()->add($this);
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function removeTag(Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+        $tag->getArticles()->removeElement($tag);
     }
 }
