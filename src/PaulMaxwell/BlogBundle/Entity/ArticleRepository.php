@@ -172,7 +172,7 @@ class ArticleRepository extends EntityRepository
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param $id
+     * @param integer $id
      * @return QueryBuilder
      */
     public function applyAfterIdCriterion(QueryBuilder $queryBuilder, $id)
@@ -190,7 +190,7 @@ class ArticleRepository extends EntityRepository
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param $id
+     * @param integer $id
      * @return QueryBuilder
      */
     public function applyBeforeIdCriterion(QueryBuilder $queryBuilder, $id)
