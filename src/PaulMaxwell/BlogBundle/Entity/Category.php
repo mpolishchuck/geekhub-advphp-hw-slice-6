@@ -48,7 +48,7 @@ class Category
     }
 
     /**
-     * @return Category[]
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getChildren()
     {
@@ -96,7 +96,7 @@ class Category
     }
 
     /**
-     * @return Article[]
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getArticles()
     {
