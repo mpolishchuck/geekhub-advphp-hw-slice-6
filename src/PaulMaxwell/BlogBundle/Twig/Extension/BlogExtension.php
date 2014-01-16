@@ -54,6 +54,11 @@ class BlogExtension extends \Twig_Extension
         return $crawler->saveHTML();
     }
 
+    /**
+     * @param integer $input
+     * @param integer $max_weight
+     * @return float
+     */
     public function tagWeightPercentFilter($input, $max_weight)
     {
         $max_weight = $max_weight ?: 1;
@@ -65,11 +70,14 @@ class BlogExtension extends \Twig_Extension
         return 'blog_extension';
     }
 
-    protected function fixImgTagsInCrawler(HtmlPageCrawler $crawler)
+    /**
+     * @param HtmlPageCrawler|Crawler $crawler
+     */
+    protected function fixImgTagsInCrawler($crawler)
     {
         $extension = $this;
 
-        $crawler->each(function (HtmlPageCrawler $node, $i) use ($extension) {
+        $crawler->each(function (HtmlPageCrawler $node) use ($extension) {
             if ($node->nodeName() == 'img') {
                 $node->setAttribute('src', $extension->assetsExtension->getAssetUrl($node->attr('src')));
             } else {
