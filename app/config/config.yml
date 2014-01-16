@@ -125,3 +125,21 @@ sonata_block:
     default_contexts: [cms]
     blocks:
         sonata.admin.block.admin_list: { contexts: [admin] }
+
+sonata_admin:
+    templates:
+        layout: SonataAdminBundle::standard_layout_with_tinymce.html.twig
+
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: true
+    theme:
+        advanced:
+            plugins:
+                - 'advlist autolink lists link image charmap print preview hr anchor pagebreak'
+                - 'searchreplace wordcount visualblocks visualchars code fullscreen'
+                - 'insertdatetime media nonbreaking save table contextmenu directionality'
+                - 'emoticons template paste textcolor'
+            toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+            toolbar2: 'print preview media | forecolor backcolor emoticons'
+            image_advtab: true

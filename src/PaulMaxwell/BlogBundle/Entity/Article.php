@@ -192,6 +192,6 @@ class Article
     public function removeTag(Tag $tag)
     {
         $this->tags->removeElement($tag);
-        $tag->getArticles()->removeElement($tag);
+        $tag->getArticles()->removeElement($this);
     }
 }

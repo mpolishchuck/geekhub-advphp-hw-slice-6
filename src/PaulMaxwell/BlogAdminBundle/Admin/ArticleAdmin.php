@@ -17,13 +17,20 @@ class ArticleAdmin extends Admin
                 'property' => 'title',
             ))
             ->add('title', 'text')
-            ->add('body')
+            ->add('body', 'textarea', array(
+                'attr' => array(
+                    'class' => 'tinymce',
+                    'tinymce' => '{"theme":"advanced"}',
+                    'data-theme' => 'advanced',
+                ),
+            ))
             ->add('tags', 'entity', array(
                 'class' => 'PaulMaxwellBlogBundle:Tag',
                 'property' => 'title',
                 'multiple' => true,
                 'expanded' => false,
                 'by_reference' => false,
+                'required' => false,
             ));
     }
 
