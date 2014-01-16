@@ -4,6 +4,7 @@ namespace PaulMaxwell\BlogBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 
 class ArticleRepository extends EntityRepository
 {
@@ -58,6 +59,11 @@ class ArticleRepository extends EntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    /**
+     * @param integer $id
+     * @param array $filter
+     * @return bool
+     */
     public function hasArticlesBefore($id, $filter = array())
     {
         /**
@@ -67,26 +73,16 @@ class ArticleRepository extends EntityRepository
 
         $queryBuilder = $this->createQueryBuilder('a')
             ->where('a.postedAt > :before_posted_at')
-            ->setParameter(':before_posted_at', $article->getPostedAt())
-            ->orderBy('a.postedAt', 'ASC')
-            ->addOrderBy('a.id', 'ASC')
-            ->setMaxResults(1);
-        if (isset($filter['category']) && ($filter['category'] !==  false)) {
-            $queryBuilder->andWhere('a.category = :category_id')
-                ->setParameter(':category_id', $filter['category']);
-        }
-        if (isset($filter['tag']) && ($filter['tag'] !== false)) {
-            $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
-                ->setParameter(':tag_id', $filter['tag']);
-        }
-        if (isset($filter['like']) && !empty($filter['like'])) {
-            $queryBuilder->andWhere('(a.title LIKE :text_search OR a.body LIKE :text_search)')
-                ->setParameter(':text_search', '%' . $filter['like'] . '%');
-        }
+            ->setParameter(':before_posted_at', $article->getPostedAt());
 
-        return (count($queryBuilder->getQuery()->getResult()) > 0);
+        return $this->checkOneArticleExistence($queryBuilder, $filter);
     }
 
+    /**
+     * @param integer $id
+     * @param array $filter
+     * @return bool
+     */
     public function hasArticlesAfter($id, $filter = array())
     {
         /**
@@ -96,26 +92,14 @@ class ArticleRepository extends EntityRepository
 
         $queryBuilder = $this->createQueryBuilder('a')
             ->where('a.postedAt < :after_posted_at')
-            ->setParameter(':after_posted_at', $article->getPostedAt())
-            ->orderBy('a.postedAt', 'ASC')
-            ->addOrderBy('a.id', 'ASC')
-            ->setMaxResults(1);
-        if (isset($filter['category']) && ($filter['category'] !==  false)) {
-            $queryBuilder->andWhere('a.category = :category_id')
-                ->setParameter(':category_id', $filter['category']);
-        }
-        if (isset($filter['tag']) && ($filter['tag'] !== false)) {
-            $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
-                ->setParameter(':tag_id', $filter['tag']);
-        }
-        if (isset($filter['like']) && !empty($filter['like'])) {
-            $queryBuilder->andWhere('(a.title LIKE :text_search OR a.body LIKE :text_search)')
-                ->setParameter(':text_search', '%' . $filter['like'] . '%');
-        }
+            ->setParameter(':after_posted_at', $article->getPostedAt());
 
-        return (count($queryBuilder->getQuery()->getResult()) > 0);
+        return $this->checkOneArticleExistence($queryBuilder, $filter);
     }
 
+    /**
+     * @param integer $id
+     */
     public function increaseHitsById($id)
     {
         $query = $this
@@ -136,5 +120,26 @@ class ArticleRepository extends EntityRepository
                 array_map(function (Article $article) { return $article->getId(); }, $articles)
             )
             ->getQuery()->execute();
+    }
+
+    protected function checkOneArticleExistence(QueryBuilder $queryBuilder, $filter = array())
+    {
+        $queryBuilder->orderBy('a.postedAt', 'ASC')
+            ->addOrderBy('a.id', 'ASC')
+            ->setMaxResults(1);
+        if (isset($filter['category']) && ($filter['category'] !==  false)) {
+            $queryBuilder->andWhere('a.category = :category_id')
+                ->setParameter(':category_id', $filter['category']);
+        }
+        if (isset($filter['tag']) && ($filter['tag'] !== false)) {
+            $queryBuilder->innerJoin('a.tags', 't', Join::WITH, 't.id = :tag_id')
+                ->setParameter(':tag_id', $filter['tag']);
+        }
+        if (isset($filter['like']) && !empty($filter['like'])) {
+            $queryBuilder->andWhere('(a.title LIKE :text_search OR a.body LIKE :text_search)')
+                ->setParameter(':text_search', '%' . $filter['like'] . '%');
+        }
+
+        return (count($queryBuilder->getQuery()->getResult()) > 0);
     }
 }

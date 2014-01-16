@@ -33,7 +33,7 @@ class LoadArticles extends AbstractFixture implements OrderedFixtureInterface, C
 
         $fixture = $this;
 
-        $content->each(function (Crawler $node, $i) use ($fixture, $manager) {
+        $content->each(function (Crawler $node) use ($fixture, $manager) {
             if ($node->filter('state')->text() != '1') {
                 // Skip unpublished articles
                 return;
@@ -84,7 +84,7 @@ class LoadArticles extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->flush();
 
         $images = $crawler->filter('j2xml img');
-        $images->each(function (Crawler $node, $i) use ($fixture) {
+        $images->each(function (Crawler $node) use ($fixture) {
             $filename = $node->attr('src');
             $content = trim($node->text());
 

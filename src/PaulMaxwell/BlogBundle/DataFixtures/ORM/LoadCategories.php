@@ -27,7 +27,7 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface
 
         $categories = array();
 
-        $crawler->each(function (Crawler $node, $i) use (&$categories) {
+        $crawler->each(function (Crawler $node) use (&$categories) {
             $categories[html_entity_decode(
                 $node->filter('path')->text(),
                 ENT_NOQUOTES | ENT_SUBSTITUTE,
