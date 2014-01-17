@@ -5,7 +5,7 @@ namespace PaulMaxwell\BlogAdminBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class TinyMceDocumentBasePass implements CompilerPassInterface
+class TinymcePass implements CompilerPassInterface
 {
 
     /**
@@ -21,5 +21,12 @@ class TinyMceDocumentBasePass implements CompilerPassInterface
             'stfalcon_tinymce.twig.extension.class',
             'PaulMaxwell\BlogAdminBundle\Twig\Extension\PaulMaxwellTinymceExtension'
         );
+
+        $config = $container->getParameterBag()->get('stfalcon_tinymce.config');
+
+        $config['include_jquery'] = false;
+        $config['tinymce_jquery'] = true;
+
+        $container->getParameterBag()->set('stfalcon_tinymce.config', $config);
     }
 }
