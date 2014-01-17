@@ -11,23 +11,32 @@ class CategoryAdmin extends Admin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('title', 'text');
+        $formMapper
+            ->add('parent', 'entity', array(
+                'class' => 'PaulMaxwellBlogBundle:Category',
+                'property' => 'title',
+                'label' => 'paul_maxwell_blog_admin.category_form.parent',
+                'required' => false,
+            ))
+            ->add('title', 'text', array('label' => 'paul_maxwell_blog_admin.category_form.title'));
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('title');
+        $datagridMapper->add('title', null, array('label' => 'paul_maxwell_blog_admin.category_filter.title'));
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('title', 'text')
+            ->add('title', 'text', array('label' => 'paul_maxwell_blog_admin.category_list.title'))
+            ->add('parent.title', 'text', array('label' => 'paul_maxwell_blog_admin.category_list.parent'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
                     'delete' => array(),
                 ),
+                'label' => 'paul_maxwell_blog_admin.list.actions',
             ));
     }
 }

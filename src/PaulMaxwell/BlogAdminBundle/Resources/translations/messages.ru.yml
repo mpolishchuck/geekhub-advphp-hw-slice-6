@@ -7,3 +7,31 @@ paul_maxwell_blog_admin:
         password: "Пароль"
         login: "Вход"
     homepage: "Главная"
+    article_list:
+        title: "Заголовок"
+        category: "Категория"
+        created: "Создано"
+        modified: "Изменено"
+        hits: "Просмотров"
+    article_form:
+        category: "Категория"
+        title: "Заголовок"
+        body: "Тело"
+        tags: "Теги"
+    article_filter:
+        category: "Категория"
+        title: "Заголовок"
+    tag_list:
+        title: "Название"
+    tag_form:
+        title: "Название"
+    tag_filter:
+        title: "Название"
+    category_list:
+        title: "Название"
+    category_form:
+        title: "Название"
+    category_filter:
+        title: "Название"
+    list:
+        actions: "Действия"
