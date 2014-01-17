@@ -5,3 +5,16 @@ paul_maxwell_blog:
 paul_maxwell_guestbook:
     resource: "@PaulMaxwellGuestbookBundle/Resources/config/routing.yml"
     prefix:   /guestbook
+
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
+paul_maxwell_blog_admin:
+    resource: '@PaulMaxwellBlogAdminBundle/Resources/config/routing.yml'
+    prefix: /secured

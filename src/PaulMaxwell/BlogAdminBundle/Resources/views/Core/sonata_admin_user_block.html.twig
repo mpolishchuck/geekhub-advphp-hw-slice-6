@@ -1,0 +1,9 @@
+{% extends "SonataAdminBundle:Core:user_block.html.twig" %}
+
+{% block user_block %}
+    {{ app.user.username }}
+    ::
+    <a href="{{ url('paul_maxwell_blog_homepage') }}" target="_blank">{{ 'paul_maxwell_blog_admin.view_site'|trans }}</a>
+    ::
+    <a href="{{ url('paul_maxwell_blog_admin_logout') }}" target="_self">{{ 'paul_maxwell_blog_admin.logout'|trans }}</a>
+{% endblock user_block %}

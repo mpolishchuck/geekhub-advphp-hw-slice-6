@@ -125,7 +125,12 @@ class DefaultController extends Controller
          */
         $tr = $this->get('paul_maxwell_blog_bundle.repository.tag');
         $tags = $tr->findAll();
-        $max_weight = max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
+        if (count($tags) > 0) {
+            $max_weight = max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
+        } else {
+            $max_weight = 1;
+        }
+
         /**
          * @var \PaulMaxwell\GuestbookBundle\Entity\MessageRepository $mr
          */
