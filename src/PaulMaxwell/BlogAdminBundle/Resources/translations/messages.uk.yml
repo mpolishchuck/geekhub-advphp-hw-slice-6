@@ -1,0 +1,9 @@
+paul_maxwell_blog_admin:
+    view_site: "Переглянути сайт"
+    logout: "Вихід"
+    login_form:
+        title: "Форма входу"
+        username: "Ім’я користувача"
+        password: "Пароль"
+        login: "Вхід"
+    homepage: "Головна"

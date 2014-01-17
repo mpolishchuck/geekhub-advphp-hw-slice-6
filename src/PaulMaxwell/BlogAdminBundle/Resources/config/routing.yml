@@ -1,0 +1,10 @@
+paul_maxwell_blog_admin_login:
+    pattern: /login
+    defaults:
+        _controller: PaulMaxwellBlogAdminBundle:Secured:login
+
+paul_maxwell_blog_admin_login_check:
+    pattern: /authenticate
+
+paul_maxwell_blog_admin_logout:
+    pattern: /logout

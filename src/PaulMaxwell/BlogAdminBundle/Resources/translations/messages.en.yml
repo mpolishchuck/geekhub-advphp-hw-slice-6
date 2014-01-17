@@ -1,0 +1,9 @@
+paul_maxwell_blog_admin:
+    view_site: "View site"
+    logout: "Log out"
+    login_form:
+        title: "Login form"
+        username: "Username"
+        password: "Password"
+        login: "Login"
+    homepage: "Homepage"
