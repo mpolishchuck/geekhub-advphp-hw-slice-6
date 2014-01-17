@@ -1,0 +1,37 @@
+paul_maxwell_blog_admin:
+    view_site: "Переглянути сайт"
+    logout: "Вихід"
+    login_form:
+        title: "Форма входу"
+        username: "Ім’я користувача"
+        password: "Пароль"
+        login: "Вхід"
+    homepage: "Головна"
+    article_list:
+        title: "Заголовок"
+        category: "Категорія"
+        created: "Створено"
+        modified: "Змінено"
+        hits: "Переглядів"
+    article_form:
+        category: "Категорія"
+        title: "Заголовок"
+        body: "Тіло"
+        tags: "Теги"
+    article_filter:
+        category: "Категорія"
+        title: "Заголовок"
+    tag_list:
+        title: "Назва"
+    tag_form:
+        title: "Назва"
+    tag_filter:
+        title: "Назва"
+    category_list:
+        title: "Назва"
+    category_form:
+        title: "Назва"
+    category_filter:
+        title: "Назва"
+    list:
+        actions: "Дії"

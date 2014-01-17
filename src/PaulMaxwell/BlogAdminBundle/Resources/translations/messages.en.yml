@@ -1,0 +1,40 @@
+paul_maxwell_blog_admin:
+    view_site: "View site"
+    logout: "Log out"
+    login_form:
+        title: "Login form"
+        username: "Username"
+        password: "Password"
+        login: "Login"
+    homepage: "Homepage"
+    article_list:
+        title: "Title"
+        category: "Category"
+        created: "Created"
+        modified: "Modified"
+        hits: "Hits"
+    article_form:
+        category: "Category"
+        title: "Title"
+        body: "Body"
+        tags: "Tags"
+    article_filter:
+        category: "Category"
+        title: "Title"
+    tag_list:
+        title: "Title"
+    tag_form:
+        title: "Title"
+    tag_filter:
+        title: "Title"
+    category_list:
+        title: "Title"
+        parent: "Parent"
+    category_form:
+        title: "Title"
+        parent: "Parent"
+    category_filter:
+        title: "Title"
+        parent: "Parent"
+    list:
+        actions: "Actions"

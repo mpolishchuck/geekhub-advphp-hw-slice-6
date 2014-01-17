@@ -103,6 +103,9 @@ paul_maxwell_blog:
         -
             route: "paul_maxwell_guestbook_homepage"
             text: "paul_maxwell_blog.main_menu.guestbook"
+        -
+            route: "sonata_admin_redirect"
+            text: "Admin"
     articles_per_panel: 5
     gb_posts_per_panel: 5
     articles_per_page: %posts_on_page_count%
@@ -120,3 +123,13 @@ lunetics_locale:
         - en
         - ru
         - uk
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list: { contexts: [admin] }
+
+sonata_admin:
+    templates:
+        layout: PaulMaxwellBlogAdminBundle::standard_sonata_admin_layout_with_tinymce.html.twig
+        user_block: PaulMaxwellBlogAdminBundle:Core:sonata_admin_user_block.html.twig

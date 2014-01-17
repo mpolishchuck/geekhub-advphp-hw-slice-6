@@ -29,7 +29,10 @@
         "wa72/htmlpagedom": "v1.0.4",
         "knplabs/knp-markdown-bundle": "1.2.0",
         "whiteoctober/breadcrumbs-bundle": "1.0.0",
-        "lunetics/locale-bundle": "v2.2.1"
+        "lunetics/locale-bundle": "v2.2.1",
+        "sonata-project/admin-bundle": "2.2.9",
+        "sonata-project/doctrine-orm-admin-bundle": "2.2.6",
+        "stfalcon/tinymce-bundle": "v0.3.6"
     },
     "scripts": {
         "post-install-cmd": [
