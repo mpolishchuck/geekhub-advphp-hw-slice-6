@@ -24,6 +24,9 @@
             <argument/>
             <argument>PaulMaxwell\BlogBundle\Entity\Article</argument>
             <argument/>
+            <call method="setCategoryRepository">
+                <argument type="service" id="paul_maxwell_blog_bundle.repository.category"/>
+            </call>
         </service>
     </services>
 
