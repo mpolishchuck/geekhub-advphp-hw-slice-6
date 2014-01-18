@@ -2,7 +2,6 @@
 
 namespace PaulMaxwell\BlogAdminBundle\Admin;
 
-use PaulMaxwell\BlogBundle\Entity\CategoryRepository;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -40,8 +39,6 @@ class ArticleAdmin extends Admin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-
-
         $datagridMapper
             ->add(
                 'category',
