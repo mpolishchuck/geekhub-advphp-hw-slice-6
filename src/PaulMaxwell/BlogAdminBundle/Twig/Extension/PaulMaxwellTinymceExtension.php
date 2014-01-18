@@ -15,11 +15,9 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
         $assets = $this->getService('templating.helper.assets');
 
         // Get path to tinymce script for the jQuery version of the editor
-        if ($config['tinymce_jquery']) {
-            $config['jquery_script_url'] = $assets->getUrl(
-                $this->baseUrl . 'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js'
-            );
-        }
+        $config['jquery_script_url'] = $assets->getUrl(
+            $this->baseUrl . 'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js'
+        );
 
         // Get local button's image
         foreach ($config['tinymce_buttons'] as &$customButton) {
@@ -32,41 +30,31 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
         }
 
         // If the language is not set in the config...
-        if (!isset($config['language']) || empty($config['language'])) {
+        if (empty($config['language'])) {
             // get it from the request
             $config['language'] = $this->getService('request')->getLocale();
         }
 
-        $langDirectory = __DIR__ . '/../../Resources/public/vendor/tinymce/langs/';
+        $kernel = $this->getService('kernel');
+        $langDirectory = $kernel->locateResource('@StfalconTinymceBundle/Resources/public/vendor/tinymce/langs') . '/';
 
         // A language code coming from the locale may not match an existing language file
         if (!file_exists($langDirectory . $config['language'] . '.js')) {
-            // Try shortening the code
-            if (strlen($config['language']) > 2) {
-                $shortCode = substr($config['language'], 0, 2);
-
-                if (file_exists($langDirectory . $shortCode . '.js')) {
-                    $config['language'] = $shortCode;
-                } else {
-                    unset($config['language']);
-                }
+            $shortCode = substr($config['language'], 0, 2);
+            $longCode = $shortCode . '_' . strtoupper($config['language']);
+            if (file_exists($langDirectory . $shortCode . '.js')) {
+                $config['language'] = $shortCode;
+            } elseif (file_exists($langDirectory . $longCode . '.js')) {
+                $config['language'] = $longCode;
             } else {
-                // Try expanding the code
-                $longCode = $config['language'] . '_' . strtoupper($config['language']);
-
-                if (file_exists($langDirectory . $longCode . '.js')) {
-                    $config['language'] = $longCode;
-                } else {
-                    unset($config['language']);
-                }
+                // English - is a default language, which always exists
+                $config['language'] = 'en';
             }
         }
 
-        if (isset($config['language']) && $config['language']) {
-            // TinyMCE does not allow to set different languages to each instance
-            foreach ($config['theme'] as $themeName => $themeOptions) {
-                $config['theme'][$themeName]['language'] = $config['language'];
-            }
+        // TinyMCE does not allow to set different languages to each instance
+        foreach ($config['theme'] as $themeName => $themeOptions) {
+            $config['theme'][$themeName]['language'] = $config['language'];
         }
 
         foreach ($config['theme'] as &$bundleTheme) {
