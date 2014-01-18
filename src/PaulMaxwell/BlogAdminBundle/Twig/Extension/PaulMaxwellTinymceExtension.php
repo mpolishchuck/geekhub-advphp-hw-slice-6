@@ -20,14 +20,14 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
         );
 
         // Get local button's image
-        foreach ($config['tinymce_buttons'] as &$customButton) {
-            $customButton['image'] = $this->getAssetsUrl($customButton['image']);
-        }
+        array_walk($config['tinymce_buttons'], function (&$button) {
+            $button['image'] = $this->getAssetsUrl($button['image']);
+        });
 
         // Update URL to external plugins
-        foreach ($config['external_plugins'] as &$extPlugin) {
-            $extPlugin['url'] = $this->getAssetsUrl($extPlugin['url']);
-        }
+        array_walk($config['external_plugins'], function (&$plugin) {
+            $plugin['url'] = $this->getAssetsUrl($plugin['url']);
+        });
 
         // If the language is not set in the config...
         if (empty($config['language'])) {
@@ -54,13 +54,10 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
         }
 
         // TinyMCE does not allow to set different languages to each instance
-        foreach ($config['theme'] as $themeName => $themeOptions) {
-            $config['theme'][$themeName]['language'] = $config['language'];
-        }
-
-        foreach ($config['theme'] as &$bundleTheme) {
-            $bundleTheme['document_base_url'] = $assets->getUrl('');
-        }
+        array_walk($config['theme'], function (&$theme) use ($config, $assets) {
+            $theme['language'] = $config['language'];
+            $theme['document_base_url'] = $assets->getUrl('');
+        });
 
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config' => preg_replace('/"file_browser_callback":"([^"]+)"\s*/', 'file_browser_callback:$1', json_encode($config)),
