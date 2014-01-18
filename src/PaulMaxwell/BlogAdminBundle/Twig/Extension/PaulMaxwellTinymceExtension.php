@@ -10,7 +10,7 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
     {
         $config = $this->getParameter('stfalcon_tinymce.config');
 
-        $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
+        $this->baseUrl = $config['base_url'];
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->getService('templating.helper.assets');
 
