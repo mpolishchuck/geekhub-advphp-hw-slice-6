@@ -40,7 +40,19 @@ class ArticleAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('category.title', null, array('label' => 'paul_maxwell_blog_admin.article_filter.category'))
+            ->add(
+                'category',
+                null,
+                array(
+                    'label' => 'paul_maxwell_blog_admin.article_filter.category'
+                ),
+                'entity',
+                array(
+                    'class' => 'PaulMaxwellBlogBundle:Category',
+                    'property' => 'title',
+                    'multiple' => true,
+                )
+            )
             ->add('title', null, array('label' => 'paul_maxwell_blog_admin.article_filter.title'));
     }
 
