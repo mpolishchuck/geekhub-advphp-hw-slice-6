@@ -35,20 +35,21 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
             $config['language'] = $this->getService('request')->getLocale();
         }
 
-        $kernel = $this->getService('kernel');
-        $langDirectory = $kernel->locateResource('@StfalconTinymceBundle/Resources/public/vendor/tinymce/langs') . '/';
+        $langDirectory = $this
+                ->getService('kernel')
+                ->locateResource('@StfalconTinymceBundle/Resources/public/vendor/tinymce/langs') . '/';
 
         // A language code coming from the locale may not match an existing language file
-        if (!file_exists($langDirectory . $config['language'] . '.js')) {
-            $shortCode = substr($config['language'], 0, 2);
-            $longCode = $shortCode . '_' . strtoupper($config['language']);
-            if (file_exists($langDirectory . $shortCode . '.js')) {
-                $config['language'] = $shortCode;
-            } elseif (file_exists($langDirectory . $longCode . '.js')) {
-                $config['language'] = $longCode;
-            } else {
-                // English - is a default language, which always exists
-                $config['language'] = 'en';
+        $langs = array(
+            $config['language'],
+            substr($config['language'], 0, 2),
+            substr($config['language'], 0, 2) . '_' . strtoupper($config['language']),
+            'en',
+        );
+        foreach ($langs as $lang) {
+            if (file_exists($langDirectory . $lang . '.js')) {
+                $config['language'] = $lang;
+                break;
             }
         }
 
