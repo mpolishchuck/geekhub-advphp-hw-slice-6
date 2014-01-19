@@ -19,12 +19,45 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface
      */
     function load(ObjectManager $manager)
     {
-        $crawler = new Crawler();
-        $crawler->addXmlContent(file_get_contents(__DIR__ . '/data/j2xml1250020140108104918.xml'));
+        $fixture = $this;
 
-        CssSelector::disableHtmlExtension();
-        $crawler = $crawler->filter('j2xml category');
+        $categories = $this->getCategories($this->getCategoriesCrawler());
 
+        array_walk($categories, function (&$category) use (&$categories) {
+            $cat = new Category();
+            $cat->setTitle($category);
+
+            $category = $cat;
+        });
+
+        array_walk($categories, function (Category &$category, $path) use ($categories, $fixture, $manager) {
+            $parentPath = $fixture->getParentPath($path);
+            if (isset ($categories[$parentPath])) {
+                $category->setParent($categories[$parentPath]);
+            }
+            $manager->persist($category);
+            $fixture->addReference('cat_' . $path, $category);
+        });
+
+        $manager->flush();
+    }
+
+    /**
+     * Get the order of this fixture
+     *
+     * @return integer
+     */
+    function getOrder()
+    {
+        return 1;
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @return array
+     */
+    protected function getCategories(Crawler $crawler)
+    {
         $categories = array();
 
         $crawler->each(function (Crawler $node) use (&$categories) {
@@ -39,35 +72,31 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface
             );
         });
 
-        $insertedCategories = array();
-        ksort($categories);
-
-        foreach ($categories as $path => $title) {
-            $category = new Category();
-            $category->setTitle($title);
-            if (($pos = strrpos($path, '/')) !== false) {
-                $parentPath = substr($path, 0, $pos);
-                if (isset($insertedCategories[$parentPath])) {
-                    $category->setParent($insertedCategories[$parentPath]);
-                }
-            }
-
-            $manager->persist($category);
-
-            $insertedCategories[$path] = $category;
-            $this->addReference('cat_' . $path, $category);
-        }
-
-        $manager->flush();
+        return $categories;
     }
 
     /**
-     * Get the order of this fixture
-     *
-     * @return integer
+     * @param string $path
+     * @return null|string
      */
-    function getOrder()
+    protected function getParentPath($path)
     {
-        return 1;
+        if (($pos = strrpos($path, '/')) !== false) {
+            return substr($path, 0, $pos);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Crawler
+     */
+    protected function getCategoriesCrawler()
+    {
+        $crawler = new Crawler();
+        $crawler->addXmlContent(file_get_contents(__DIR__ . '/data/j2xml1250020140108104918.xml'));
+        CssSelector::disableHtmlExtension();
+
+        return $crawler->filter('j2xml category');
     }
 }
