@@ -10,7 +10,7 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
     {
         $config = $this->getParameter('stfalcon_tinymce.config');
 
-        $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
+        $this->baseUrl = $config['base_url'];
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->getService('templating.helper.assets');
 
@@ -20,14 +20,14 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
         );
 
         // Get local button's image
-        foreach ($config['tinymce_buttons'] as &$customButton) {
-            $customButton['image'] = $this->getAssetsUrl($customButton['image']);
-        }
+        array_walk($config['tinymce_buttons'], function (&$button) {
+            $button['image'] = $this->getAssetsUrl($button['image']);
+        });
 
         // Update URL to external plugins
-        foreach ($config['external_plugins'] as &$extPlugin) {
-            $extPlugin['url'] = $this->getAssetsUrl($extPlugin['url']);
-        }
+        array_walk($config['external_plugins'], function (&$plugin) {
+            $plugin['url'] = $this->getAssetsUrl($plugin['url']);
+        });
 
         // If the language is not set in the config...
         if (empty($config['language'])) {
@@ -35,31 +35,27 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
             $config['language'] = $this->getService('request')->getLocale();
         }
 
-        $kernel = $this->getService('kernel');
-        $langDirectory = $kernel->locateResource('@StfalconTinymceBundle/Resources/public/vendor/tinymce/langs') . '/';
+        $langDirectory = $this
+                ->getService('kernel')
+                ->locateResource('@StfalconTinymceBundle/Resources/public/vendor/tinymce/langs') . '/';
 
         // A language code coming from the locale may not match an existing language file
-        if (!file_exists($langDirectory . $config['language'] . '.js')) {
-            $shortCode = substr($config['language'], 0, 2);
-            $longCode = $shortCode . '_' . strtoupper($config['language']);
-            if (file_exists($langDirectory . $shortCode . '.js')) {
-                $config['language'] = $shortCode;
-            } elseif (file_exists($langDirectory . $longCode . '.js')) {
-                $config['language'] = $longCode;
-            } else {
-                // English - is a default language, which always exists
-                $config['language'] = 'en';
-            }
-        }
+        $languages = array(
+            $config['language'],
+            substr($config['language'], 0, 2),
+            substr($config['language'], 0, 2) . '_' . strtoupper(substr($config['language'], 0, 2)),
+        );
+        $languages = array_filter($languages, function ($lang) use ($langDirectory) {
+            return file_exists($langDirectory . $lang . '.js');
+        });
+        $languages[] = 'en';
+        $config['language'] = reset($languages);
 
         // TinyMCE does not allow to set different languages to each instance
-        foreach ($config['theme'] as $themeName => $themeOptions) {
-            $config['theme'][$themeName]['language'] = $config['language'];
-        }
-
-        foreach ($config['theme'] as &$bundleTheme) {
-            $bundleTheme['document_base_url'] = $assets->getUrl('');
-        }
+        array_walk($config['theme'], function (&$theme) use ($config, $assets) {
+            $theme['language'] = $config['language'];
+            $theme['document_base_url'] = $assets->getUrl('');
+        });
 
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config' => preg_replace('/"file_browser_callback":"([^"]+)"\s*/', 'file_browser_callback:$1', json_encode($config)),

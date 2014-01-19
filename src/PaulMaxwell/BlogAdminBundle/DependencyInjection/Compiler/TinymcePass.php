@@ -26,6 +26,7 @@ class TinymcePass implements CompilerPassInterface
 
         $config['include_jquery'] = false;
         $config['tinymce_jquery'] = true;
+        $config['base_url'] = (!isset($config['base_url']) ? null : $config['base_url']);
 
         $container->getParameterBag()->set('stfalcon_tinymce.config', $config);
     }
