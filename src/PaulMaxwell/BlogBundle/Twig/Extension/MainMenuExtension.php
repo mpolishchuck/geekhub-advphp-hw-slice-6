@@ -34,24 +34,24 @@ class MainMenuExtension extends \Twig_Extension
     public function getMainMenu()
     {
         $items = array_merge($this->prependedItems, func_get_args(), $this->appendedItems);
-        $output = '';
 
-        foreach ($items as $item) {
-            $output .= '<li';
-            if ($this->request->attributes->get('_route') == $item['route']) {
+        $request = $this->request;
+        $translator = $this->translator;
+        $router = $this->router;
+        $items = array_map(function ($item) use ($request, $translator, $router) {
+            $output = '<li';
+            if ($request->attributes->get('_route') == $item['route']) {
                 $output .= ' class="active"';
             }
-            $output .= '><a href="';
-            $output .= htmlspecialchars($this->router->generate(
+            $output .= '><a href="' . htmlspecialchars($router->generate(
                 $item['route'],
                 isset($item['parameters']) ? $item['parameters'] : array()
-            ));
-            $output .= '">';
-            $output .= $this->translator->trans($item['text']);
-            $output .= '</a></li>';
-        }
+            )) . '">' . $translator->trans($item['text']) . '</a></li>';
 
-        return $output;
+            return $output;
+        }, $items);
+
+        return implode('', $items);
     }
 
     public function prepend($item)
