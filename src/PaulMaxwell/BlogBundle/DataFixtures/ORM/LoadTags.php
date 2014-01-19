@@ -19,7 +19,7 @@ class LoadTags extends AbstractFixture implements OrderedFixtureInterface
      */
     function load(ObjectManager $manager)
     {
-        $tags = Yaml::parse(__DIR__ . '/data/tags.yml');
+        $tags = $this->getTagData();
         array_walk($tags, function (&$tag) {
             $t = new Tag();
             $t->setTitle($tag);
@@ -31,21 +31,9 @@ class LoadTags extends AbstractFixture implements OrderedFixtureInterface
          * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
          */
         $ar = $manager->getRepository('PaulMaxwellBlogBundle:Article');
-        $articles = $ar->findAll();
 
-        array_walk($articles, function (Article &$article) use ($tags) {
-            $tagCount = mt_rand(0, round(count($tags) * 0.8));
-            $keys = array_keys($tags);
-            shuffle($keys);
-            $keys = array_slice($keys, 0, $tagCount);
-            array_walk($keys, function (&$key) use ($article, $tags) {
-                $article->addTag($tags[$key]);
-            });
-        });
-
-        array_walk($tags, function (Tag &$tag) use ($manager) {
-            $manager->persist($tag);
-        });
+        $this->bindTags($ar->findAll(), $tags);
+        $this->persistEntities($tags, $manager);
 
         $manager->flush();
     }
@@ -58,5 +46,30 @@ class LoadTags extends AbstractFixture implements OrderedFixtureInterface
     function getOrder()
     {
         return 3;
+    }
+
+    protected function getTagData()
+    {
+        return Yaml::parse(__DIR__ . '/data/tags.yml');
+    }
+
+    protected function persistEntities($tags, ObjectManager $manager)
+    {
+        array_walk($tags, function (Tag &$tag) use ($manager) {
+            $manager->persist($tag);
+        });
+    }
+
+    protected function bindTags($articles, $tags)
+    {
+        array_walk($articles, function (Article &$article) use ($tags) {
+            $tagCount = mt_rand(0, round(count($tags) * 0.8));
+            $keys = array_keys($tags);
+            shuffle($keys);
+            $keys = array_slice($keys, 0, $tagCount);
+            array_walk($keys, function (&$key) use ($article, $tags) {
+                $article->addTag($tags[$key]);
+            });
+        });
     }
 }
