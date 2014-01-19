@@ -43,7 +43,7 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
         $languages = array(
             $config['language'],
             substr($config['language'], 0, 2),
-            substr($config['language'], 0, 2) . '_' . strtoupper($config['language']),
+            substr($config['language'], 0, 2) . '_' . strtoupper(substr($config['language'], 0, 2)),
         );
         $languages = array_filter($languages, function ($lang) use ($langDirectory) {
             return file_exists($langDirectory . $lang . '.js');
