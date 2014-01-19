@@ -163,11 +163,6 @@ class DefaultController extends Controller
             $this->container->getParameter('paul_maxwell_blog.articles_per_panel')
         );
         $tags = $this->tagRepository->findAll();
-        if (count($tags) > 0) {
-            $max_weight = max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
-        } else {
-            $max_weight = 1;
-        }
 
         /**
          * @var \PaulMaxwell\GuestbookBundle\Entity\MessageRepository $mr
@@ -181,9 +176,31 @@ class DefaultController extends Controller
             'last' => $last,
             'popular' => $popular,
             'tags' => $tags,
-            'tag_max_weight' => $max_weight,
+            'tag_max_weight' => $this->getMaxTagTimesUsed($tags),
             'gb_posts' => $gb_posts,
         ));
+    }
+
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\Category $category
+     * @return string
+     */
+    public function getLinkByCategory(Category $category)
+    {
+        return $this->router->generate('paul_maxwell_blog_category', array('category_id' => $category->getId()));
+    }
+
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\Tag[] $tags
+     * @return integer
+     */
+    protected function getMaxTagTimesUsed($tags)
+    {
+        if (count($tags) > 0) {
+            return max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
+        } else {
+            return 1;
+        }
     }
 
     /**
@@ -199,17 +216,12 @@ class DefaultController extends Controller
         if ($entity instanceof Tag) {
             $this->breadcrumbs->addItem('paul_maxwell_blog.tags');
         }
-        $categories = array();
-        $category = $this->getEntityParent($entity);
-        while ($category) {
-            $categories = array_merge(array($category), $categories);
-            $category = $category->getParent();
-        }
 
-        $router = $this->router;
-        $this->breadcrumbs->addObjectArray($categories, 'title', function (Category $category) use ($router) {
-            return $router->generate('paul_maxwell_blog_category', array('category_id' => $category->getId()));
-        });
+        $this->breadcrumbs->addObjectArray(
+            $this->getEntityParentPath($entity),
+            'title',
+            array($this, 'getLinkByCategory')
+        );
 
         $this->breadcrumbs->addItem($entity->getTitle());
     }
@@ -227,6 +239,20 @@ class DefaultController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\Article|\PaulMaxwell\BlogBundle\Entity\Category|\PaulMaxwell\BlogBundle\Entity\Tag $entity
+     * @return array
+     */
+    protected function getEntityParentPath($entity)
+    {
+        $parents = array();
+        while ($entity = $this->getEntityParent($entity)) {
+            $parents = array_merge(array($entity), $parents);
+        }
+
+        return $parents;
     }
 
     protected function signalArticleViewed(Article $article)
@@ -266,9 +292,9 @@ class DefaultController extends Controller
     protected function getRouteSettings($category_id = null, $tag_id = null, $search = null)
     {
         $route_settings = array();
-        if ($category_id !== false) {
+        if ($category_id !== null) {
             $route_settings['category_id'] = $category_id;
-        } elseif ($tag_id !== false) {
+        } elseif ($tag_id !== null) {
             $route_settings['tag_id'] = $tag_id;
         }
         if (!empty($search)) {

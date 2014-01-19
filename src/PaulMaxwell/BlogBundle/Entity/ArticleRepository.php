@@ -27,15 +27,7 @@ class ArticleRepository extends EntityRepository
         $this->applyTagIdFilter($queryBuilder, $filter);
         $this->applyTextLikeFilter($queryBuilder, $filter);
 
-        if ($after_id !== null) {
-            $this->applyAfterIdCriterion($queryBuilder, $after_id);
-        } elseif ($before_id !== null) {
-            $this->applyBeforeIdCriterion($queryBuilder, $before_id);
-        }
-
-        $result = $queryBuilder->getQuery()->getResult();
-
-        return ($before_id !== null) ? array_reverse($result) : $result;
+        return $this->getSliceOfArticles($queryBuilder, $after_id, $before_id);
     }
 
     /**
@@ -204,5 +196,24 @@ class ArticleRepository extends EntityRepository
             ->setParameter(':before_posted_at', $article->getPostedAt());
 
         return $queryBuilder;
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param integer|null $after_id
+     * @param integer|null $before_id
+     * @return array
+     */
+    protected function getSliceOfArticles(QueryBuilder $queryBuilder, $after_id = null, $before_id = null)
+    {
+        if ($after_id !== null) {
+            $this->applyAfterIdCriterion($queryBuilder, $after_id);
+        } elseif ($before_id !== null) {
+            $this->applyBeforeIdCriterion($queryBuilder, $before_id);
+        }
+
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return ($before_id !== null) ? array_reverse($result) : $result;
     }
 }
