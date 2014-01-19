@@ -40,18 +40,16 @@ class PaulMaxwellTinymceExtension extends StfalconTinymceExtension
                 ->locateResource('@StfalconTinymceBundle/Resources/public/vendor/tinymce/langs') . '/';
 
         // A language code coming from the locale may not match an existing language file
-        $langs = array(
+        $languages = array(
             $config['language'],
             substr($config['language'], 0, 2),
             substr($config['language'], 0, 2) . '_' . strtoupper($config['language']),
-            'en',
         );
-        foreach ($langs as $lang) {
-            if (file_exists($langDirectory . $lang . '.js')) {
-                $config['language'] = $lang;
-                break;
-            }
-        }
+        $languages = array_filter($languages, function ($lang) use ($langDirectory) {
+            return file_exists($langDirectory . $lang . '.js');
+        });
+        $languages[] = 'en';
+        $config['language'] = reset($languages);
 
         // TinyMCE does not allow to set different languages to each instance
         array_walk($config['theme'], function (&$theme) use ($config, $assets) {
