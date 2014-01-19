@@ -32,6 +32,40 @@
         <service id="paul_maxwell_blog_bundle.repository.tag" class="PaulMaxwell\BlogBundle\Entity\TagRepository" factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
             <argument>PaulMaxwellBlogBundle:Tag</argument>
         </service>
+        <service id="paul_maxwell_blog_bundle.controller.default" class="PaulMaxwell\BlogBundle\Controller\DefaultController">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+            <call method="setArticleRepository">
+                <argument type="service" id="paul_maxwell_blog_bundle.repository.article"/>
+            </call>
+            <call method="setCategoryRepository">
+                <argument type="service" id="paul_maxwell_blog_bundle.repository.category"/>
+            </call>
+            <call method="setTagRepository">
+                <argument type="service" id="paul_maxwell_blog_bundle.repository.tag"/>
+            </call>
+            <call method="setEventDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+            <call method="setRouter">
+                <argument type="service" id="router"/>
+            </call>
+            <call method="setBreadcrumbs">
+                <argument type="service" id="white_october_breadcrumbs"/>
+            </call>
+        </service>
+        <service id="paul_maxwell_blog_bundle.controller.static_page" class="PaulMaxwell\BlogBundle\Controller\StaticPageController">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+            <call method="setMarkdownParser">
+                <argument type="service" id="markdown.parser"/>
+            </call>
+            <call method="setTranslator">
+                <argument type="service" id="translator"/>
+            </call>
+        </service>
     </services>
 
 </container>

@@ -7,21 +7,88 @@ use PaulMaxwell\BlogBundle\Entity\Category;
 use PaulMaxwell\BlogBundle\Entity\Tag;
 use PaulMaxwell\BlogBundle\Event\ArticleViewedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
-    public function indexAction($category_id = false, $tag_id = false)
-    {
-        $request = $this->getRequest();
+    /**
+     * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository
+     */
+    protected $articleRepository;
+    /**
+     * @var \PaulMaxwell\BlogBundle\Entity\CategoryRepository
+     */
+    protected $categoryRepository;
+    /**
+     * @var \PaulMaxwell\BlogBundle\Entity\TagRepository
+     */
+    protected $tagRepository;
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     */
+    protected $eventDispatcher;
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
+     */
+    protected $router;
+    /**
+     * @var \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs
+     */
+    protected $breadcrumbs;
 
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\ArticleRepository $articleRepository
+     */
+    public function setArticleRepository($articleRepository)
+    {
+        $this->articleRepository = $articleRepository;
+    }
+
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\CategoryRepository $categoryRepository
+     */
+    public function setCategoryRepository($categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\TagRepository $tagRepository
+     */
+    public function setTagRepository($tagRepository)
+    {
+        $this->tagRepository = $tagRepository;
+    }
+
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
+    public function setEventDispatcher($eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @param \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs $breadcrumbs
+     */
+    public function setBreadcrumbs($breadcrumbs)
+    {
+        $this->breadcrumbs = $breadcrumbs;
+    }
+
+    /**
+     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+     */
+    public function setRouter($router)
+    {
+        $this->router = $router;
+    }
+
+    public function indexAction(Request $request, $category_id = false, $tag_id = false)
+    {
         $after_id = $request->get('after_id');
         $before_id = $request->get('before_id');
         $search = $request->get('search');
-
-        /**
-         * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
-         */
-        $ar = $this->get('paul_maxwell_blog_bundle.repository.article');
 
         $filter = array();
         $route_settings = array();
@@ -45,19 +112,17 @@ class DefaultController extends Controller
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\Article[] $articles
          */
-        $articles = $ar->findLastArticles(
+        $articles = $this->articleRepository->findLastArticles(
             $this->container->getParameter('paul_maxwell_blog.articles_per_page'),
             $after_id,
             $before_id,
             $filter
         );
-        if (count($articles)) {
-            $ar->fetchTagDataByArticles($articles);
-        }
 
         if (count($articles) > 0) {
-            $hasPrevious = $ar->hasArticlesBefore($articles[0]->getId(), $filter);
-            $hasNext = $ar->hasArticlesAfter($articles[count($articles) - 1]->getId(), $filter);
+            $this->articleRepository->fetchTagDataByArticles($articles);
+            $hasPrevious = $this->articleRepository->hasArticlesBefore($articles[0]->getId(), $filter);
+            $hasNext = $this->articleRepository->hasArticlesAfter($articles[count($articles) - 1]->getId(), $filter);
         } else {
             $hasPrevious = false;
             $hasNext = false;
@@ -85,22 +150,11 @@ class DefaultController extends Controller
     public function showArticleAction($id)
     {
         /**
-         * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
-         */
-        $ar = $this->get('paul_maxwell_blog_bundle.repository.article');
-        /**
          * @var \PaulMaxwell\BlogBundle\Entity\Article $article
          */
-        $article = $ar->find($id);
+        $article = $this->articleRepository->find($id);
 
-        $event = new ArticleViewedEvent();
-        $event->setArticle($article);
-        /**
-         * @var \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
-         */
-        $eventDispatcher = $this->get('event_dispatcher');
-        $eventDispatcher->dispatch('paul_maxwell_blog_bundle.article_viewed', $event);
-
+        $this->signalArticleViewed($article);
         $this->generateBreadcrumbs($article);
 
         return $this->render('PaulMaxwellBlogBundle:Default:article.html.twig', array(
@@ -110,21 +164,13 @@ class DefaultController extends Controller
 
     public function partialSidebarAction()
     {
-        /**
-         * @var \PaulMaxwell\BlogBundle\Entity\ArticleRepository $ar
-         */
-        $ar = $this->get('paul_maxwell_blog_bundle.repository.article');
-        $last = $ar->findLastArticles(
+        $last = $this->articleRepository->findLastArticles(
             $this->container->getParameter('paul_maxwell_blog.articles_per_panel')
         );
-        $popular = $ar->findPopularArticles(
+        $popular = $this->articleRepository->findPopularArticles(
             $this->container->getParameter('paul_maxwell_blog.articles_per_panel')
         );
-        /**
-         * @var \PaulMaxwell\BlogBundle\Entity\TagRepository $tr
-         */
-        $tr = $this->get('paul_maxwell_blog_bundle.repository.tag');
-        $tags = $tr->findAll();
+        $tags = $this->tagRepository->findAll();
         if (count($tags) > 0) {
             $max_weight = max(array_map(function (Tag $tag) { return $tag->getTimesUsed(); }, $tags));
         } else {
@@ -153,32 +199,37 @@ class DefaultController extends Controller
      */
     protected function generateBreadcrumbs($entity)
     {
-        /**
-         * @var \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs $breadcrumbs
-         * @var \Symfony\Bundle\FrameworkBundle\Routing\Router $router
-         */
-        $breadcrumbs = $this->get('white_october_breadcrumbs');
-        $router = $this->get('router');
-        $breadcrumbs->addItem(
+        $this->breadcrumbs->addItem(
             'paul_maxwell_blog.main_menu.home',
-            $this->get('router')->generate('paul_maxwell_blog_homepage')
+            $this->router->generate('paul_maxwell_blog_homepage')
         );
+
         $categories = array();
+        $category = null;
         if ($entity instanceof Article) {
             $category = $entity->getCategory();
         } elseif ($entity instanceof Category) {
             $category = $entity->getParent();
         } elseif ($entity instanceof Tag) {
-            $breadcrumbs->addItem('paul_maxwell_blog.tags');
+            $this->breadcrumbs->addItem('paul_maxwell_blog.tags');
         }
-        if (isset($category) && $category) {
-            do {
-                $categories = array_merge(array($category), $categories);
-            } while (($category = $category->getParent()) !== null);
+        while ($category) {
+            $categories = array_merge(array($category), $categories);
+            $category = $category->getParent();
         }
-        $breadcrumbs->addObjectArray($categories, 'title', function (Category $category) use ($router) {
+
+        $router = $this->router;
+        $this->breadcrumbs->addObjectArray($categories, 'title', function (Category $category) use ($router) {
             return $router->generate('paul_maxwell_blog_category', array('category_id' => $category->getId()));
         });
-        $breadcrumbs->addItem($entity->getTitle());
+
+        $this->breadcrumbs->addItem($entity->getTitle());
+    }
+
+    protected function signalArticleViewed(Article $article)
+    {
+        $event = new ArticleViewedEvent();
+        $event->setArticle($article);
+        $this->eventDispatcher->dispatch('paul_maxwell_blog_bundle.article_viewed', $event);
     }
 }
