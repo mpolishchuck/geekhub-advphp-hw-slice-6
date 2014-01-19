@@ -31,10 +31,7 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface
         });
 
         array_walk($categories, function (Category &$category, $path) use ($categories, $fixture, $manager) {
-            $parentPath = $fixture->getParentPath($path);
-            if (isset ($categories[$parentPath])) {
-                $category->setParent($categories[$parentPath]);
-            }
+            $fixture->setCategoryParentByPath($categories, $path);
             $manager->persist($category);
             $fixture->addReference('cat_' . $path, $category);
         });
@@ -98,5 +95,20 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface
         CssSelector::disableHtmlExtension();
 
         return $crawler->filter('j2xml category');
+    }
+
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\Category[] $categories
+     * @param string $path
+     */
+    protected function setCategoryParentByPath($categories, $path)
+    {
+        if (isset($categories[$path])) {
+            $parentPath = $this->getParentPath($path);
+            if (isset($categories[$parentPath])) {
+                $categories[$path]->setParent($categories[$parentPath]);
+            }
+        }
+
     }
 }
