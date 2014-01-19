@@ -84,30 +84,22 @@ class DefaultController extends Controller
         $this->router = $router;
     }
 
-    public function indexAction(Request $request, $category_id = false, $tag_id = false)
+    public function indexAction(Request $request, $category_id = null, $tag_id = null)
     {
         $after_id = $request->get('after_id');
         $before_id = $request->get('before_id');
         $search = $request->get('search');
 
-        $filter = array();
-        $route_settings = array();
-        if ($category_id !== false) {
-            $filter['category'] = $category_id;
-            $route_settings['category_id'] = $category_id;
+        $filter = $this->getFilter($category_id, $tag_id, $search);
+        $route_settings = $this->getRouteSettings($category_id, $tag_id, $search);
+        if ($category_id !== null) {
             $this->generateBreadcrumbs(
-                $this->get('paul_maxwell_blog_bundle.repository.category')->find($category_id)
+                $this->categoryRepository->find($category_id)
             );
-        } elseif ($tag_id !== false) {
-            $filter['tag'] = $tag_id;
-            $route_settings['tag_id'] = $tag_id;
+        } elseif ($tag_id !== null) {
             $this->generateBreadcrumbs(
-                $this->get('paul_maxwell_blog_bundle.repository.tag')->find($tag_id)
+                $this->tagRepository->find($tag_id)
             );
-        }
-        if (!empty($search)) {
-            $filter['like'] = $search;
-            $route_settings['search'] = $search;
         }
         /**
          * @var \PaulMaxwell\BlogBundle\Entity\Article[] $articles
@@ -204,15 +196,11 @@ class DefaultController extends Controller
             $this->router->generate('paul_maxwell_blog_homepage')
         );
 
-        $categories = array();
-        $category = null;
-        if ($entity instanceof Article) {
-            $category = $entity->getCategory();
-        } elseif ($entity instanceof Category) {
-            $category = $entity->getParent();
-        } elseif ($entity instanceof Tag) {
+        if ($entity instanceof Tag) {
             $this->breadcrumbs->addItem('paul_maxwell_blog.tags');
         }
+        $categories = array();
+        $category = $this->getEntityParent($entity);
         while ($category) {
             $categories = array_merge(array($category), $categories);
             $category = $category->getParent();
@@ -226,10 +214,67 @@ class DefaultController extends Controller
         $this->breadcrumbs->addItem($entity->getTitle());
     }
 
+    /**
+     * @param \PaulMaxwell\BlogBundle\Entity\Article|\PaulMaxwell\BlogBundle\Entity\Category|\PaulMaxwell\BlogBundle\Entity\Tag $entity
+     * @return \PaulMaxwell\BlogBundle\Entity\Category
+     */
+    protected function getEntityParent($entity)
+    {
+        if ($entity instanceof Article) {
+            return $entity->getCategory();
+        } elseif ($entity instanceof Category) {
+            return $entity->getParent();
+        }
+
+        return null;
+    }
+
     protected function signalArticleViewed(Article $article)
     {
         $event = new ArticleViewedEvent();
         $event->setArticle($article);
         $this->eventDispatcher->dispatch('paul_maxwell_blog_bundle.article_viewed', $event);
+    }
+
+    /**
+     * @param integer $category_id
+     * @param integer $tag_id
+     * @param string $search
+     * @return array
+     */
+    protected function getFilter($category_id = null, $tag_id = null, $search = null)
+    {
+        $filter = array();
+        if ($category_id !== false) {
+            $filter['category'] = $category_id;
+        } elseif ($tag_id !== false) {
+            $filter['tag'] = $tag_id;
+        }
+        if (!empty($search)) {
+            $filter['like'] = $search;
+        }
+
+        return $filter;
+    }
+
+    /**
+     * @param integer $category_id
+     * @param integer $tag_id
+     * @param string $search
+     * @return array
+     */
+    protected function getRouteSettings($category_id = null, $tag_id = null, $search = null)
+    {
+        $route_settings = array();
+        if ($category_id !== false) {
+            $route_settings['category_id'] = $category_id;
+        } elseif ($tag_id !== false) {
+            $route_settings['tag_id'] = $tag_id;
+        }
+        if (!empty($search)) {
+            $route_settings['search'] = $search;
+        }
+
+        return $route_settings;
     }
 }
