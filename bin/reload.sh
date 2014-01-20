@@ -26,3 +26,5 @@ php app/console assetic:dump
 
 php app/console cache:clear
 php app/console doctrine:fixtures:load --no-interaction
+
+php app/console fos:user:create --super-admin "admin" "admin@local.net" "admin"
