@@ -1,0 +1,23 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+    <div class="panel panel-default" style="margin: 50px auto;">
+        <div class="panel-heading">
+            {{ 'paul_maxwell_blog_admin.login_form.title'|trans({}, 'messages') }}
+        </div>
+        <div class="panel-body">
+            {% if invalid_username is defined %}
+                <div class="alert alert-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</div>
+            {% endif %}
+            <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+                <div class="form-group">
+                    <label for="username">{{ 'resetting.request.username'|trans }}</label>
+                    <input type="text" id="username" name="username" required="required" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="form-control" value="{{ 'resetting.request.submit'|trans }}" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

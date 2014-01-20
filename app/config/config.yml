@@ -133,3 +133,8 @@ sonata_admin:
     templates:
         layout: PaulMaxwellBlogAdminBundle::standard_sonata_admin_layout_with_tinymce.html.twig
         user_block: PaulMaxwellBlogAdminBundle:Core:sonata_admin_user_block.html.twig
+
+fos_user:
+    db_driver: orm
+    firewall_name: secured_area
+    user_class: PaulMaxwell\BlogAdminBundle\Entity\User

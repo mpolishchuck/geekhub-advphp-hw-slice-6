@@ -32,7 +32,8 @@
         "lunetics/locale-bundle": "v2.2.1",
         "sonata-project/admin-bundle": "2.2.9",
         "sonata-project/doctrine-orm-admin-bundle": "2.2.6",
-        "stfalcon/tinymce-bundle": "v0.3.6"
+        "stfalcon/tinymce-bundle": "v0.3.6",
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "scripts": {
         "post-install-cmd": [
