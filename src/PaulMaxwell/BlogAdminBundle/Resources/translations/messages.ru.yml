@@ -6,6 +6,10 @@ paul_maxwell_blog_admin:
         username: "Имя пользователя"
         password: "Пароль"
         login: "Вход"
+    password_reset_form:
+        title: "Сброс пароля"
+    password_change_form:
+        title: "Изменение пароля"
     homepage: "Главная"
     article_list:
         title: "Заголовок"
