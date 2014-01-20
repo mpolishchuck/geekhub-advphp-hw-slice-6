@@ -23,4 +23,9 @@ class FOSUserBundleListener
         $url = $this->router->generate('sonata_admin_redirect');
         $event->setResponse(new RedirectResponse($url));
     }
+
+    public function onChangePasswordEditSuccess(FormEvent $event)
+    {
+        $this->onResettingResetSuccess($event);
+    }
 }

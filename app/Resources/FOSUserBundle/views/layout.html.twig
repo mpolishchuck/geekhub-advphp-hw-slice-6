@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="navbar-text pull-right">
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} (<a href="{{ url('fos_user_change_password') }}">{{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a>)
                         ::
                         <a href="{{ url('paul_maxwell_blog_homepage') }}" target="_blank">{{ 'paul_maxwell_blog_admin.view_site'|trans }}</a>
                         ::

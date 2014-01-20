@@ -1,7 +1,7 @@
 {% extends "SonataAdminBundle:Core:user_block.html.twig" %}
 
 {% block user_block %}
-    {{ app.user.username }}
+    {{ app.user.username }} (<a href="{{ url('fos_user_change_password') }}">{{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a>)
     ::
     <a href="{{ url('paul_maxwell_blog_homepage') }}" target="_blank">{{ 'paul_maxwell_blog_admin.view_site'|trans }}</a>
     ::
