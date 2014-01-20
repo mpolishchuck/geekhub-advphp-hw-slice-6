@@ -6,6 +6,10 @@ paul_maxwell_blog_admin:
         username: "Username"
         password: "Password"
         login: "Login"
+    password_reset_form:
+        title: "Password reset"
+    password_change_form:
+        title: "Password changing"
     homepage: "Homepage"
     article_list:
         title: "Title"

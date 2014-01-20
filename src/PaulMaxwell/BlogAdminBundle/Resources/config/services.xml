@@ -25,6 +25,12 @@
             <argument>PaulMaxwell\BlogBundle\Entity\Article</argument>
             <argument/>
         </service>
+
+        <service id="paul_maxwell_blog_admin_bundle.fos_user.listener" class="PaulMaxwell\BlogAdminBundle\EventListener\FOSUserBundleListener">
+            <argument type="service" id="router"/>
+            <tag name="kernel.event_listener" event="fos_user.resetting.reset.success" method="onResettingResetSuccess"/>
+            <tag name="kernel.event_listener" event="fos_user.change_password.edit.success" method="onChangePasswordEditSuccess"/>
+        </service>
     </services>
 
 </container>
